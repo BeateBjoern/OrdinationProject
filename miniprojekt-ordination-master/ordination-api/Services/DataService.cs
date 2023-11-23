@@ -169,7 +169,14 @@ public class DataService
     }
 
     public string AnvendOrdination(int id, Dato dato) {
-        // TODO: Implement!
+
+
+       if (id!= null && dato != null)
+        {
+            var ordination = db.PNs.FirstOrDefault(pn => pn.OrdinationId == id);
+            ordination.dates.Add(dato);
+            db.SaveChanges();
+        }
         return null!;
     }
 

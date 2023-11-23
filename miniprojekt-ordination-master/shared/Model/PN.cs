@@ -26,14 +26,40 @@ public class PN : Ordination {
         return true;
     }
 
-    public override double doegnDosis() {
-
+    public override double doegnDosis()
+    {
+        Console.WriteLine("Test doegnDosis PN " + dates.Count);
         double antalGangeAnvendt = getAntalGangeGivet();
-        var firstDate = dates.First().dato;
-        var lastDate = dates.Last().dato;
-        double samletDosis = antalGangeAnvendt * antalEnheder; //samlet dosis * enheder givet i periodne
-        int periode = (int)lastDate.Subtract(firstDate).TotalDays; //antal dage fra første dag givet til seneste dag givet 
-        return samletDosis / periode; 
+
+        if (dates != null && dates.Any())
+        {
+            DateTime firstDate = dates.FirstOrDefault().dato;
+            DateTime lastDate = dates.Last().dato;
+           
+
+            if (firstDate != null && lastDate != null)
+            {
+                Console.WriteLine("Test doegnDosis PN" + firstDate + " " + lastDate);
+                double samletDosis = antalGangeAnvendt * antalEnheder;
+                int periode = (int)lastDate.Subtract(firstDate).TotalDays;
+
+                return samletDosis / periode;  // Check for division by zero
+            }
+            else
+            {
+                // Handle the case when firstDate or lastDate is null
+                // For example, throw an exception, return a default value, or take appropriate action
+                Console.WriteLine("Error: Dates collection contains null elements");
+            }
+        }
+        else
+        {
+            // Handle the case when dates is null or empty
+            // For example, throw an exception, return a default value, or take appropriate action
+            Console.WriteLine("Error: Dates collection is null or empty");
+        }
+
+        return 0.0;
     }
 
 
