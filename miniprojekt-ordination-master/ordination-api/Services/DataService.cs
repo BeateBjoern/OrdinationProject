@@ -131,7 +131,8 @@ public class DataService
     }
 
     public PN OpretPN(int patientId, int laegemiddelId, double antal, DateTime startDato, DateTime slutDato) {
-        // TODO: Implement!
+        
+
         return null!;
     }
 

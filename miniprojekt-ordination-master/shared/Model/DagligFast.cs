@@ -18,14 +18,16 @@ public class DagligFast : Ordination {
     public DagligFast() : base(null!, new DateTime(), new DateTime()) {
     }
 
+	//overriding the methods from "Ordination" class 
 	public override double samletDosis() {
 		
 		return base.antalDage() * doegnDosis();
 	}
 
 	public override double doegnDosis() {
-		// TODO: Implement!
-        return -1;
+
+		double dosis = MorgenDosis.antal + MiddagDosis.antal + AftenDosis.antal + NatDosis.antal;
+		return dosis; 
 	}
 	
 	public Dosis[] getDoser() {

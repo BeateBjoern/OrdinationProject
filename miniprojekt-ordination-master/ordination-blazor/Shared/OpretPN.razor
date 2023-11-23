@@ -74,11 +74,19 @@
         if (Patient == null || laegemiddel == null) {
             return;
         }
-        Console.WriteLine("Opret");
-        PN pn = await apiService.OpretPN(Patient.id, laegemiddel.LaegemiddelId, antalEnheder, StartDato, SlutDato);
-        Console.WriteLine("Oprettet!");
-        Console.WriteLine(pn);
-        onDone?.Invoke($"Oprettet PN ordination for {Patient.navn}!");
+        try
+        {
+            Console.WriteLine("Opret");
+            PN pn = await apiService.OpretPN(Patient.id, laegemiddel.LaegemiddelId, antalEnheder, StartDato, SlutDato);
+            Console.WriteLine("Oprettet!");
+            Console.WriteLine(pn);
+            onDone?.Invoke($"Oprettet PN ordination for {Patient.navn}!");
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine("Something went wrong " + ex.Message );
+        }
+
     }
 
 }

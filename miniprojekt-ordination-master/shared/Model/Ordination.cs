@@ -6,6 +6,7 @@ public abstract class Ordination {
     public DateTime slutDen { get; set; }
     public Laegemiddel laegemiddel { get; set; }
     
+    //Ordination konstruktør tager start og slut dato + lægemiddel 
     public Ordination(Laegemiddel laegemiddel, DateTime startDen = new DateTime(), DateTime slutDen = new DateTime()) {
     	this.startDen = startDen;
     	this.slutDen = slutDen;
@@ -21,8 +22,7 @@ public abstract class Ordination {
     /// Antal hele dage mellem startdato og slutdato. Begge dage inklusive.
     /// </summary>
     public int antalDage() {
-        // TODO: Implement!
-        return -1;
+        return (int)slutDen.Subtract(startDen).TotalDays;        
     }
 
     public override String ToString() {

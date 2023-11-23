@@ -18,7 +18,7 @@ public class ApiService
     {
         this.http = http;
         this.configuration = configuration;
-        this.baseAPI = configuration["base_api"];
+        this.baseAPI = configuration["base_api"]; //baseapi = https://localhost:8080/api/
     }
 
     public void CallRequestRefresh()
@@ -47,12 +47,38 @@ public class ApiService
 
     public async Task<PN> OpretPN(int patientId, int laegemiddelId, double antal, DateTime startDato, DateTime slutDato)
     {
-        string url = $"{baseAPI}ordinationer/pn/";
-        PN_DTO opret = new(patientId, laegemiddelId, antal, startDato, slutDato);
-        HttpResponseMessage res = await http.PostAsJsonAsync<PN_DTO>(url, opret);
-        string json = res.Content.ReadAsStringAsync().Result;
-        PN newPN = JsonSerializer.Deserialize<PN>(json)!;
-        return newPN;
+        try
+        {
+            string url = $"{baseAPI}ordinationer/pn/";
+            PN_DTO opret = new(patientId, laegemiddelId, antal, startDato, slutDato);
+            HttpResponseMessage res = await http.PostAsJsonAsync<PN_DTO>(url, opret);
+
+            // Check if the request was successful before reading the content
+            res.EnsureSuccessStatusCode();
+
+            string json = await res.Content.ReadAsStringAsync();
+            PN newPN = JsonSerializer.Deserialize<PN>(json)!;
+            return newPN;
+        }
+        catch (HttpRequestException ex)
+        {
+            // Handle HTTP request-related exceptions
+            // You might want to log the exception or perform other error-handling actions
+            Console.WriteLine($"HTTP request error: {ex.Message}");
+            throw; // Re-throw the exception to propagate it further if needed
+        }
+        catch (JsonException ex)
+        {
+            // Handle JSON serialization/deserialization exceptions
+            Console.WriteLine($"JSON error: {ex.Message}");
+            throw;
+        }
+        catch (Exception ex)
+        {
+            // Handle other exceptions
+            Console.WriteLine($"An error occurred: {ex.Message}");
+            throw;
+        }
     }
 
     public async Task<DagligFast> OpretDagligFast(int patientId, int laegemiddelId, 
