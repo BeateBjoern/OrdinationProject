@@ -3,14 +3,15 @@ namespace shared.Model;
 public class DagligSkæv : Ordination {
     public List<Dosis> doser { get; set; } = new List<Dosis>();
 
-    public DagligSkæv(DateTime startDen, DateTime slutDen, Laegemiddel laegemiddel) : base(laegemiddel, startDen, slutDen) {
+	public int patientId { get; set; } 
+    public DagligSkæv(int patientId, DateTime startDen, DateTime slutDen, Laegemiddel laegemiddel) : base(patientId, laegemiddel, startDen, slutDen) {
 	}
 
-    public DagligSkæv(DateTime startDen, DateTime slutDen, Laegemiddel laegemiddel, Dosis[] doser) : base(laegemiddel, startDen, slutDen) {
+    public DagligSkæv(int patientId, DateTime startDen, DateTime slutDen, Laegemiddel laegemiddel, Dosis[] doser) : base(patientId, laegemiddel, startDen, slutDen) {
         this.doser = doser.ToList();
     }    
 
-    public DagligSkæv() : base(null!, new DateTime(), new DateTime()) {
+    public DagligSkæv() : base(0, null!, new DateTime(), new DateTime()) {
     }
 
 	public void opretDosis(DateTime tid, double antal) {

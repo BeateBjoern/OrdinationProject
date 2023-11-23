@@ -26,12 +26,12 @@ builder.Services.AddScoped<DataService>();
 
 var app = builder.Build();
 
-//// Seed data hvis nødvendigt.
-//using (var scope = app.Services.CreateScope())
-//{
-//    var dataService = scope.ServiceProvider.GetRequiredService<DataService>();
-//    dataService.SeedData();
-//}
+// Seed data hvis nødvendigt.
+using (var scope = app.Services.CreateScope())
+{
+    var dataService = scope.ServiceProvider.GetRequiredService<DataService>();
+    //dataService.SeedData();
+}
 
 app.UseHttpsRedirection();
 app.UseCors(AllowCors);
@@ -82,7 +82,7 @@ app.MapGet("/api/laegemidler", (DataService service) =>
 
 app.MapPost("/api/ordinationer/pn/", (DataService service, PN_DTO dto) =>
 {
-    Console.WriteLine("Test opretPN API endpoint " + dto.antal);
+    Console.WriteLine("Test opretPN API endpoint " + dto.antal +  "patientId " + dto.patientId);
     return service.OpretPN(dto.patientId, dto.laegemiddelId, dto.antal, dto.startDato, dto.slutDato);
 });
 
@@ -107,5 +107,7 @@ app.MapPost("/api/patienter/{id}/beregnAnbefaletDosisPerDøgn", (DataService ser
     AnbefaletDosisDTO response = new AnbefaletDosisDTO(dto.laegemiddelId, dosisStørrelse);
     return Results.Ok(response);
 });
+
+
 
 app.Run();

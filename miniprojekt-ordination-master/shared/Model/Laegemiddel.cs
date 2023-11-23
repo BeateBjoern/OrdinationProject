@@ -24,6 +24,7 @@ public class Laegemiddel
         this.enhed = "";
     }
 
+
     public override String ToString()
     {
         return navn;

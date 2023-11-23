@@ -49,6 +49,7 @@ public class ApiService
     {
         try
         {
+            Console.WriteLine("Test ApiService client: " + patientId);
             string url = $"{baseAPI}ordinationer/pn/";
             PN_DTO opret = new(patientId, laegemiddelId, antal, startDato, slutDato);
             HttpResponseMessage res = await http.PostAsJsonAsync<PN_DTO>(url, opret);
