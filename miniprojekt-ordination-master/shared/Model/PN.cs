@@ -3,14 +3,14 @@ namespace shared.Model;
 public class PN : Ordination {
 	public double antalEnheder { get; set; }
     public List<Dato> dates { get; set; } = new List<Dato>();
-    public int patientId { get; set; }
+ 
 
-    public PN (int patientId, DateTime startDen, DateTime slutDen, double antalEnheder, Laegemiddel laegemiddel) : base( patientId, laegemiddel, startDen, slutDen) {
+    public PN (DateTime startDen, DateTime slutDen, double antalEnheder, Laegemiddel laegemiddel) : base( laegemiddel, startDen, slutDen) {
 		this.antalEnheder = antalEnheder;
 
     }
 
-    public PN() : base(0, null!, new DateTime(), new DateTime())
+    public PN() : base( null!, new DateTime(), new DateTime())
     {
     }
 
@@ -20,46 +20,39 @@ public class PN : Ordination {
     /// Returner false ellers og datoen givesDen ignoreres
     /// </summary>
     public bool givDosis(Dato givesDen) {
-        
-        if(givesDen == null) { return false; }
+
+
+        if (givesDen == null && givesDen.dato <= startDen || givesDen.dato >= slutDen) { return false; }
         dates.Add(givesDen);
+
+        Console.WriteLine("givDosis " + givesDen + " " + givesDen.ToString);
         return true;
     }
 
     public override double doegnDosis()
     {
-        Console.WriteLine("Test doegnDosis PN " + dates.Count);
-        double antalGangeAnvendt = getAntalGangeGivet();
+        double sum = 0;
 
-        if (dates != null && dates.Any())
+        if (dates.Count() > 0)
         {
-            DateTime firstDate = dates.FirstOrDefault().dato;
-            DateTime lastDate = dates.Last().dato;
-           
+            DateTime min = dates.First().dato;
+            DateTime max = dates.Last().dato;
 
-            if (firstDate != null && lastDate != null)
+            foreach (Dato d in dates)
             {
-                Console.WriteLine("Test doegnDosis PN" + firstDate + " " + lastDate);
-                double samletDosis = antalGangeAnvendt * antalEnheder;
-                int periode = (int)lastDate.Subtract(firstDate).TotalDays;
-
-                return samletDosis / periode;  // Check for division by zero
+                if (d.dato < min)
+                {
+                    min = d.dato;
+                }
+                if (d.dato > max)
+                {
+                    max = d.dato;
+                }
             }
-            else
-            {
-                // Handle the case when firstDate or lastDate is null
-                // For example, throw an exception, return a default value, or take appropriate action
-                Console.WriteLine("Error: Dates collection contains null elements");
-            }
+            int dage = (int)(max - min).TotalDays + 1;
+            sum = samletDosis() / dage;
         }
-        else
-        {
-            // Handle the case when dates is null or empty
-            // For example, throw an exception, return a default value, or take appropriate action
-            Console.WriteLine("Error: Dates collection is null or empty");
-        }
-
-        return 0.0;
+        return sum;
     }
 
 

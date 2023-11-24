@@ -30,7 +30,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var dataService = scope.ServiceProvider.GetRequiredService<DataService>();
-    //dataService.SeedData();
+    dataService.SeedData();
 }
 
 app.UseHttpsRedirection();

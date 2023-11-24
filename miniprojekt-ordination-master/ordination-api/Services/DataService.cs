@@ -65,20 +65,20 @@ public class DataService
             Laegemiddel[] lm = db.Laegemiddler.ToArray();
             Patient[] p = db.Patienter.ToArray();
 
-            //ordinationer[0] = new PN(new DateTime(2021, 1, 1), new DateTime(2021, 1, 12), 123, lm[1]);
-            //ordinationer[1] = new PN(new DateTime(2021, 2, 12), new DateTime(2021, 2, 14), 3, lm[0]);
-            //ordinationer[2] = new PN(new DateTime(2021, 1, 20), new DateTime(2021, 1, 25), 5, lm[2]);
-            //ordinationer[3] = new PN(new DateTime(2021, 1, 1), new DateTime(2021, 1, 12), 123, lm[1]);
-            //ordinationer[4] = new DagligFast(new DateTime(2021, 1, 10), new DateTime(2021, 1, 12), lm[1], 2, 0, 1, 0);
-            //ordinationer[5] = new DagligSkæv(new DateTime(2021, 1, 23), new DateTime(2021, 1, 24), lm[2]);
+            ordinationer[0] = new PN( new DateTime(2021, 1, 1), new DateTime(2021, 1, 12), 123, lm[1]);
+            ordinationer[1] = new PN( new DateTime(2021, 2, 12), new DateTime(2021, 2, 14), 3, lm[0]);
+            ordinationer[2] = new PN( new DateTime(2021, 1, 20), new DateTime(2021, 1, 25), 5, lm[2]);
+            ordinationer[3] = new PN(new DateTime(2021, 1, 1), new DateTime(2021, 1, 12), 123, lm[1]);
+            ordinationer[4] = new DagligFast(new DateTime(2021, 1, 10), new DateTime(2021, 1, 12), lm[1], 2, 0, 1, 0);
+            ordinationer[5] = new DagligSkæv( new DateTime(2021, 1, 23), new DateTime(2021, 1, 24), lm[2]);
 
-            ((DagligSkæv) ordinationer[5]).doser = new Dosis[] { 
+            ((DagligSkæv)ordinationer[5]).doser = new Dosis[] {
                 new Dosis(CreateTimeOnly(12, 0, 0), 0.5),
                 new Dosis(CreateTimeOnly(12, 40, 0), 1),
                 new Dosis(CreateTimeOnly(16, 0, 0), 2.5),
-                new Dosis(CreateTimeOnly(18, 45, 0), 3)        
+                new Dosis(CreateTimeOnly(18, 45, 0), 3)
             }.ToList();
-            
+
 
             db.Ordinationer.Add(ordinationer[0]);
             db.Ordinationer.Add(ordinationer[1]);
@@ -134,15 +134,17 @@ public class DataService
     public PN OpretPN(int patientId, int laegemiddelId, double antal, DateTime startDato, DateTime slutDato) {
 
         var laegeMiddel = GetLaegemidler().FirstOrDefault(m => m.LaegemiddelId == laegemiddelId);
-        if (laegeMiddel != null)
+         var patient = GetPatienter().FirstOrDefault(p => p.PatientId == patientId);
+
+        if (laegeMiddel != null && patientId != null)
         {
             try
             {
                 Console.WriteLine("Test OpretPn DataService: " + patientId); 
-                PN newPn = new PN(patientId, startDato, slutDato, antal, laegeMiddel);
-                db.Add(newPn);
+                PN nyPn = new PN(startDato, slutDato, antal, laegeMiddel);
+                patient.ordinationer.Add(nyPn);
                 db.SaveChanges();
-                return newPn;
+                return nyPn; 
             }
             catch(NullReferenceException ex)
             {
@@ -151,33 +153,51 @@ public class DataService
             }
            
         }  
-  
         return null!;
     }
 
-    public DagligFast OpretDagligFast(int patientId, int laegemiddelId, 
-        double antalMorgen, double antalMiddag, double antalAften, double antalNat, 
-        DateTime startDato, DateTime slutDato) {
-
-        // TODO: Implement!
-        return null!;
-    }
-
-    public DagligSkæv OpretDagligSkaev(int patientId, int laegemiddelId, Dosis[] doser, DateTime startDato, DateTime slutDato) {
-        // TODO: Implement!
-        return null!;
-    }
-
-    public string AnvendOrdination(int id, Dato dato) {
-
-
-       if (id!= null && dato != null)
+    public DagligFast OpretDagligFast(int patientId, int laegemiddelId, double antalMorgen, double antalMiddag, double antalAften, double antalNat,
+     DateTime startDato, DateTime slutDato)
         {
-            var ordination = db.PNs.FirstOrDefault(pn => pn.OrdinationId == id);
-            ordination.dates.Add(dato);
+
+            Patient patient = db.Patienter.FirstOrDefault(a => a.PatientId == patientId);
+            Laegemiddel laegemiddel = db.Laegemiddler.FirstOrDefault(b => b.LaegemiddelId == laegemiddelId);
+            var nyDagligFast = new DagligFast(startDato, slutDato, laegemiddel, antalMorgen, antalMiddag, antalAften, antalNat);
+
+            patient.ordinationer.Add(nyDagligFast);
+            Console.WriteLine(nyDagligFast.MorgenDosis);
             db.SaveChanges();
+            return nyDagligFast;
         }
-        return null!;
+
+    public DagligSkæv OpretDagligSkaev(int patientId, int laegemiddelId, Dosis[] doser, DateTime startDato, DateTime slutDato){
+
+            Patient patient = db.Patienter.FirstOrDefault(a => a.PatientId == patientId);
+            Laegemiddel laegemiddel = db.Laegemiddler.FirstOrDefault(b => b.LaegemiddelId == laegemiddelId);
+            var nyDagligSkæv = new DagligSkæv(startDato, slutDato, laegemiddel);
+
+            foreach (var dosis in doser)
+            {
+                nyDagligSkæv.opretDosis(dosis.tid, dosis.antal);
+            }
+
+            patient.ordinationer.Add(nyDagligSkæv);
+            db.SaveChanges();
+            return nyDagligSkæv;
+        }
+
+
+    public string AnvendOrdination(int id, Dato dato)
+    {
+        PN pn = db.PNs.FirstOrDefault(pn => pn.OrdinationId == id);
+
+        if (id != null && dato.dato >= pn.startDen && dato.dato <= pn.slutDen)
+        {
+            pn.dates.Add(dato);
+            db.SaveChanges();
+            return "PN anvendt!";
+        }
+        return "Anvendelse ikke muligt udenfor ordinationsperiode";
     }
 
     /// <summary>

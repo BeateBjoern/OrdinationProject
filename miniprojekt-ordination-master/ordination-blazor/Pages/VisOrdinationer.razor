@@ -41,6 +41,7 @@
     public Ordination? ordination;
     public List<Ordination> ordinationer = new List<Ordination>();
     private PatientResponse[]? patienter;
+    private List<Dato> pnDates = new();
 
     protected override async Task OnInitializedAsync()
     {

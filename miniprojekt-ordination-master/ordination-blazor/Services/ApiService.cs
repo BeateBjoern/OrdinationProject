@@ -54,7 +54,6 @@ public class ApiService
             PN_DTO opret = new(patientId, laegemiddelId, antal, startDato, slutDato);
             HttpResponseMessage res = await http.PostAsJsonAsync<PN_DTO>(url, opret);
 
-            // Check if the request was successful before reading the content
             res.EnsureSuccessStatusCode();
 
             string json = await res.Content.ReadAsStringAsync();
@@ -63,10 +62,9 @@ public class ApiService
         }
         catch (HttpRequestException ex)
         {
-            // Handle HTTP request-related exceptions
-            // You might want to log the exception or perform other error-handling actions
+
             Console.WriteLine($"HTTP request error: {ex.Message}");
-            throw; // Re-throw the exception to propagate it further if needed
+            throw; 
         }
         catch (JsonException ex)
         {
