@@ -41,6 +41,33 @@ public class ServiceTest
         Assert.AreEqual(2, service.GetDagligFaste().Count());
     }
 
+
+    [TestMethod]
+    public void OpretPNTest()
+    {
+
+
+    }
+
+
+    [TestMethod]
+    public void OpretDagligSkaevTest()
+    {
+
+    }
+
+
+    [TestMethod]
+    public void GetAnbefaletDosisPerDoegnTest()
+    {
+
+    }
+
+
+
+
+
+
     [TestMethod]
     [ExpectedException(typeof(ArgumentNullException))]
     public void TestAtKodenSmiderEnException()

@@ -23,6 +23,12 @@
             <input @bind="StartDato" type="date" class="form-control" id="startdato">
             </div>
         </div>
+        <div class="form-group row">
+            <label for="startdato" class="col-sm-4 col-form-label">Enhed</label>
+            <div class="col-sm-8">
+                <input readonly type="text" class="form-control" id="laegemiddel" value=@laegemiddel?.enhed>
+            </div>
+        </div>
 
         <div class="form-group row">
             <label for="slutdato" class="col-sm-4 col-form-label">Slutdato for ordination</label>
@@ -62,6 +68,12 @@
             <input @bind="antalNat" type="number" class="form-control" id="antal-nat">
             </div>
         </div>
+        <div class="form-group row">
+            <label for="antal-nat" class="col-sm-4 col-form-label">Antal nat</label>
+            <div class="col-sm-8">
+               <p> @responseMessage</p>
+            </div>
+        </div>
 
         
         <div class="form-group row">
@@ -86,6 +98,7 @@
     [Parameter]
     public Action<string>? onDone { get; set; }
 
+    private string responseMessage = "";
     private int antalMorgen = 0;
     private int antalMiddag = 0;
     private int antalAften = 0;
@@ -95,12 +108,27 @@
 
     private async void Opret() {
         if (Patient == null || laegemiddel == null) {
+            responseMessage = "Patient og laegemiddel skal vælges";
             return;
         }
-        Console.WriteLine("Opret");
-        await apiService.OpretDagligFast(Patient.id, laegemiddel.LaegemiddelId, antalMorgen, antalMiddag, antalAften, antalNat, StartDato, SlutDato);
-        Console.WriteLine("Oprettet!");
-        onDone?.Invoke($"Oprettet Daglig Fast ordination for {Patient.navn}!");
+        else if (StartDato > SlutDato)
+        {
+            responseMessage = "Sludato skal være efter startdato";
+            return; 
+        }
+        else if (antalMorgen == 0 && antalMiddag == 0 && antalAften == 0 && antalNat == 0)
+        {
+            responseMessage = "Alle tidspunkter kan ikke være null";
+            return;
+        }
+        else
+        {
+            Console.WriteLine("Opret");
+            await apiService.OpretDagligFast(Patient.id, laegemiddel.LaegemiddelId, antalMorgen, antalMiddag, antalAften, antalNat, StartDato, SlutDato);
+            Console.WriteLine("Oprettet!");
+            onDone?.Invoke($"Oprettet Daglig Fast ordination for {Patient.navn}!");
+        }
+       
     }
 
 }

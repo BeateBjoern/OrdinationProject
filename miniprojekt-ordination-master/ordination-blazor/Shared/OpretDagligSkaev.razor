@@ -17,6 +17,12 @@
             <input readonly type="text" class="form-control" id="laegemiddel" value=@laegemiddel?.navn>
             </div>
         </div>
+        <div class="form-group row">
+            <label for="startdato" class="col-sm-4 col-form-label">Enhed</label>
+            <div class="col-sm-8">
+                <input readonly type="text" class="form-control" id="laegemiddel" value=@laegemiddel?.enhed>
+            </div>
+        </div>
 
         <div class="form-group row">
             <label for="startdato" class="col-sm-4 col-form-label">Startdato for ordination</label>
@@ -36,6 +42,12 @@
             <label for="anbefalet-enheder" class="col-sm-4 col-form-label">Anbefalet antal enheder per døgn</label>
             <div class="col-sm-8">
                 <input readonly type="text" class="form-control" id="anbefalet-enheder" value=@AnbefaletDosisPerDøgnRounded>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="anbefalet-enheder" class="col-sm-4 col-form-label">Anbefalet antal enheder per døgn</label>
+            <div class="col-sm-8">
+                <p style="color:red">@responseMessage</p>
             </div>
         </div>
     </div>    
@@ -68,6 +80,7 @@
             <div class="col-sm-2"></div>
         </div>
     </div>
+   
 
     <div class="row mt-4">   
         <div class="form-group row">
@@ -77,6 +90,8 @@
             </div>
         </div>
     </div>
+
+   
 </div>
 
 @code {
@@ -98,9 +113,22 @@
 
     private TimeOnly Tid { get; set; }
     private int Antal { get; set; }
+    private string responseMessage = "";
 
     private async void Opret() {
-        if (Patient == null || laegemiddel == null) {
+        if (Patient == null || laegemiddel == null)
+        {
+            responseMessage = "Patient og laegemiddel skal vælges";
+            return;
+        }
+        else if (StartDato > SlutDato)
+        {
+            responseMessage = "Sludato skal være efter startdato";
+            return;
+        }
+        else if(doser.Count == 0)
+        {
+            responseMessage = "Der skal mindst vælges èn dosis";
             return;
         }
         Console.WriteLine("Opret");

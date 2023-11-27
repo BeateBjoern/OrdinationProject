@@ -130,10 +130,11 @@ public class DataService
         return db.Laegemiddler.ToList();
     }
 
-    //tilføjet 
-    public PN OpretPN(int patientId, int laegemiddelId, double antal, DateTime startDato, DateTime slutDato) {
+  //All methods below are made by us 
+    public PN OpretPN(int patientId, int laegemiddelId, double antal, DateTime startDato, DateTime slutDato)
+    {
 
-        var laegeMiddel = GetLaegemidler().FirstOrDefault(m => m.LaegemiddelId == laegemiddelId);
+         var laegeMiddel = GetLaegemidler().FirstOrDefault(m => m.LaegemiddelId == laegemiddelId);
          var patient = GetPatienter().FirstOrDefault(p => p.PatientId == patientId);
 
         if (laegeMiddel != null && patientId != null)
@@ -156,21 +157,38 @@ public class DataService
         return null!;
     }
 
-    public DagligFast OpretDagligFast(int patientId, int laegemiddelId, double antalMorgen, double antalMiddag, double antalAften, double antalNat,
-     DateTime startDato, DateTime slutDato)
+
+    public DagligFast OpretDagligFast(int patientId, int laegemiddelId, double antalMorgen, double antalMiddag, double antalAften, double antalNat, DateTime startDato, DateTime slutDato)
+    {
+        try
         {
 
             Patient patient = db.Patienter.FirstOrDefault(a => a.PatientId == patientId);
             Laegemiddel laegemiddel = db.Laegemiddler.FirstOrDefault(b => b.LaegemiddelId == laegemiddelId);
-            var nyDagligFast = new DagligFast(startDato, slutDato, laegemiddel, antalMorgen, antalMiddag, antalAften, antalNat);
 
-            patient.ordinationer.Add(nyDagligFast);
-            Console.WriteLine(nyDagligFast.MorgenDosis);
-            db.SaveChanges();
-            return nyDagligFast;
+            if(slutDato > startDato && patient != null && laegemiddel != null)
+            {
+                var nyDagligFast = new DagligFast(startDato, slutDato, laegemiddel, antalMorgen, antalMiddag, antalAften, antalNat);
+                patient.ordinationer.Add(nyDagligFast);
+                Console.WriteLine(nyDagligFast.MorgenDosis);
+                db.SaveChanges();
+                return nyDagligFast;
+            }
+          
+        }
+        catch (ArgumentNullException ex)
+        {
+            // Handle other exceptions
+            Console.WriteLine($"En fejl opstod: {ex.Message}");
+            return null;
         }
 
-    public DagligSkæv OpretDagligSkaev(int patientId, int laegemiddelId, Dosis[] doser, DateTime startDato, DateTime slutDato){
+        return null;
+    }
+
+
+    public DagligSkæv OpretDagligSkaev(int patientId, int laegemiddelId, Dosis[] doser, DateTime startDato, DateTime slutDato)
+    {
 
             Patient patient = db.Patienter.FirstOrDefault(a => a.PatientId == patientId);
             Laegemiddel laegemiddel = db.Laegemiddler.FirstOrDefault(b => b.LaegemiddelId == laegemiddelId);
@@ -207,9 +225,28 @@ public class DataService
     /// <param name="patient"></param>
     /// <param name="laegemiddel"></param>
     /// <returns></returns>
-	public double GetAnbefaletDosisPerDøgn(int patientId, int laegemiddelId) {
-        // TODO: Implement!
+	public double GetAnbefaletDosisPerDøgn(int patientId, int laegemiddelId)
+    {
+        Patient patient = db.Patienter.FirstOrDefault(p => p.PatientId == patientId);
+        Laegemiddel laegemiddel = db.Laegemiddler.FirstOrDefault(lm => lm.LaegemiddelId == laegemiddelId);
+
+        if (patient != null && laegemiddel != null)
+        {
+            if (patient.vaegt < 25)
+            {
+                return patient.vaegt * laegemiddel.enhedPrKgPrDoegnLet;
+            }
+            else if (patient.vaegt >= 25 && patient.vaegt <= 120)
+            {
+                return patient.vaegt * laegemiddel.enhedPrKgPrDoegnNormal;
+            }
+            else
+            {
+                return patient.vaegt * laegemiddel.enhedPrKgPrDoegnTung;
+            }
+        }
+
         return -1;
-	}
-    
+    }
+
 }
