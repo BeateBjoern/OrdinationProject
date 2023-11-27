@@ -39,13 +39,33 @@ public class ServiceTest
             2, 2, 1, 0, DateTime.Now, DateTime.Now.AddDays(3));
 
         Assert.AreEqual(2, service.GetDagligFaste().Count());
+
+        var addedDagligFast = service.GetDagligFaste().Last(); // Assuming a method like Last() to get the last added item
+
+        Assert.IsNotNull(addedDagligFast, "The added DagligFast should not be null");
+        Assert.AreEqual(lm.LaegemiddelId, addedDagligFast.laegemiddel.LaegemiddelId, "LaegemiddelId burde matche");
+
     }
 
 
     [TestMethod]
     public void OpretPNTest()
     {
+        Patient patient = service.GetPatienter().First();
+        Laegemiddel lm = service.GetLaegemidler().First();
 
+        int initialCount = service.GetPNs().Count();
+
+        service.OpretPN(patient.PatientId, lm.LaegemiddelId, 6, DateTime.Now, DateTime.Now.AddDays(3));
+
+        int updatedCount = service.GetPNs().Count();
+        Assert.AreEqual(initialCount + 1, updatedCount);
+
+        var addedPN = service.GetPNs().Last(); // Assuming a method like Last() to get the last added item
+
+        Assert.IsNotNull(addedPN, "Tilføjet PN burde ikke være nul");
+        Assert.AreEqual(lm.LaegemiddelId, addedPN.laegemiddel.LaegemiddelId, "LaegemiddelId burde matche");
+        //Would have asserter for patient Id with different model, but patientid is not a property of neither of the ordination type classes nor ordination
 
     }
 
@@ -58,9 +78,21 @@ public class ServiceTest
 
 
     [TestMethod]
-    public void GetAnbefaletDosisPerDoegnTest()
+    public void GetAnbefaletDosisPerDøgnTest()
     {
+        // Arrange
+        var patient = new Patient { PatientId = 123, vaegt = 20 }; // Normal weight
+        var medication = new Laegemiddel("Acetylsalicylsyre", 0.1, 0.15, 0.16, "Styk");
 
+
+        service.AddPatient(patient);
+        service.AddLaegemiddel(medication);
+
+        // Act
+        double TC1 = service.GetAnbefaletDosisPerDøgn(patient.PatientId, medication.LaegemiddelId);
+
+        // Assert
+        Assert.AreEqual(2, TC1);
     }
 
 

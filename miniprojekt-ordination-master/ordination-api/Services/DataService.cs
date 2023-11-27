@@ -100,7 +100,21 @@ public class DataService
         }
     }
 
-    
+
+    public void AddPatient(Patient patient)
+    {
+        db.Patienter.Add(patient);
+        db.SaveChanges();
+    }
+
+    public void AddLaegemiddel(Laegemiddel laegemiddel)
+    {
+        db.Laegemiddler.Add(laegemiddel);
+        db.SaveChanges();
+    }
+
+
+
     public List<PN> GetPNs() {
         return db.PNs.Include(o => o.laegemiddel).Include(o => o.dates).ToList();
     }
