@@ -91,7 +91,6 @@ public class ServiceTest
         Assert.AreEqual(lm.LaegemiddelId, addedDagligSkæv.laegemiddel.LaegemiddelId, "LaegemiddelId burde matche");
         //Kunne med fordel have tjekket på patientId, men patientId er ikke tilgængelig parameter på ordination eller dagligfast
 
-
     }
 
 

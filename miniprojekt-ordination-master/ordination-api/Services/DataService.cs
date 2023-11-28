@@ -182,7 +182,7 @@ public class DataService
 
             if (patient == null || laegemiddel == null || antalMorgen == null || antalMiddag == null || antalAften == null || antalNat == null || startDato == null || slutDato == null)
             {
-                 throw new ArgumentNullException("Enten mangler du at ud udfylde alle felter, eller så findes patientet og/eller laegemiddlet ikke");
+                 throw new ArgumentNullException("Felter mangler eller ugyldig dato input. Startdato skal ligge før slutdato");
                  
             }
 
@@ -204,9 +204,14 @@ public class DataService
 
             Patient patient = db.Patienter.FirstOrDefault(a => a.PatientId == patientId);
             Laegemiddel laegemiddel = db.Laegemiddler.FirstOrDefault(b => b.LaegemiddelId == laegemiddelId);
-            
 
-            if(startDato < slutDato)
+            if (patient == null || laegemiddel == null || doser == null || startDato == null || slutDato == null)
+            {
+                throw new ArgumentNullException("Felter mangler eller ugyldig dato input. Startdato skal ligge før slutdato");
+
+            }
+
+        if (startDato < slutDato)
             {
                 var nyDagligSkæv = new DagligSkæv(startDato, slutDato, laegemiddel);
                 foreach (var dosis in doser)
