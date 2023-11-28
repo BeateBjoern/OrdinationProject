@@ -3,7 +3,7 @@ namespace shared.Model;
 public class DagligSkæv : Ordination {
     public List<Dosis> doser { get; set; } = new List<Dosis>();
 
-	public int patientId { get; set; } 
+	//public int patientId { get; set; } 
     public DagligSkæv(DateTime startDen, DateTime slutDen, Laegemiddel laegemiddel) : base(laegemiddel, startDen, slutDen) {
 	}
 

@@ -4,15 +4,18 @@ using System.Text.Json;
 using shared.Model;
 using static shared.Util;
 using Data;
+using Serilog;
 
 namespace Service;
 
 public class DataService
 {
     private OrdinationContext db { get; }
+    private readonly ILogger<DataService> logger;
 
-    public DataService(OrdinationContext db) {
+    public DataService(OrdinationContext db, ILogger<DataService> logger) {
         this.db = db;
+        this.logger = logger;
     }
 
     /// <summary>
@@ -275,6 +278,7 @@ public class DataService
             dosis = patient.vaegt * laegemiddel.enhedPrKgPrDoegnTung;
         }
 
+        //logger.LogInformation("GetANbefaletDosisPerDøgn færdig");
         return dosis;
     }
 

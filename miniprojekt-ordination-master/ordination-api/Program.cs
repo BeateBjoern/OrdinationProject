@@ -1,10 +1,23 @@
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.Logging;
+using Serilog;
 using Service;
 using Data;
 using shared.Model;
+using Serilog.Events;
+using Serilog.Sinks.SystemConsole;
+using Serilog.Extensions.Logging;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
 // Sætter CORS så API'en kan bruges fra andre domæner
 var AllowCors = "_AllowCors";
@@ -23,6 +36,12 @@ builder.Services.AddDbContext<OrdinationContext>(options =>
 
 // Tilføj DataService så den kan bruges i endpoints
 builder.Services.AddScoped<DataService>();
+
+builder.Services.AddLogging(loggingBuilder =>
+{
+    loggingBuilder.ClearProviders();
+    loggingBuilder.AddSerilog();
+});
 
 var app = builder.Build();
 

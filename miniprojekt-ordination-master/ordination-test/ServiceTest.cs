@@ -1,23 +1,28 @@
 namespace ordination_test;
 
 using Microsoft.EntityFrameworkCore;
-
+using Serilog;
 using Service;
 using Data;
 using shared.Model;
+using Microsoft.Extensions.Logging;
 
 [TestClass]
 public class ServiceTest
 {
     private DataService service;
+    private ILogger<DataService> testLogger; //Bruger test-specifik logger 
 
     [TestInitialize]
     public void SetupBeforeEachTest()
     {
+        TestStartup.ConfigureLogging();  //anvender logger konfigurationer defineret i startupclass
+        testLogger = new LoggerFactory().AddSerilog().CreateLogger<DataService>();//opretter et nyt instance af logger 
+
         var optionsBuilder = new DbContextOptionsBuilder<OrdinationContext>();
         optionsBuilder.UseInMemoryDatabase(databaseName: "test-database");
         var context = new OrdinationContext(optionsBuilder.Options);
-        service = new DataService(context);
+        service = new DataService(context, testLogger);
         service.SeedData();
     }
 
@@ -33,18 +38,25 @@ public class ServiceTest
     {
         Patient patient = service.GetPatienter().First();
         Laegemiddel lm = service.GetLaegemidler().First();
+        double initialCount = service.GetDagligFaste().Count();
 
+        testLogger.LogInformation("Antal dagligfaste ordinationer:" + initialCount);
         Assert.AreEqual(1, service.GetDagligFaste().Count());
+      
 
         service.OpretDagligFast(patient.PatientId, lm.LaegemiddelId,
             2, 2, 1, 0, DateTime.Now, DateTime.Now.AddDays(3));
 
+        double updatedCount = service.GetDagligFaste().Count();
+
+        testLogger.LogInformation("Antal dagligfaste ordinationer:" + updatedCount);
         Assert.AreEqual(2, service.GetDagligFaste().Count());
 
         var addedDagligFast = service.GetDagligFaste().Last(); // Finder sidste tilføjede ordination for at eftertjekke data
 
         Assert.IsNotNull(addedDagligFast, "The added DagligFast should not be null");
         Assert.AreEqual(lm.LaegemiddelId, addedDagligFast.laegemiddel.LaegemiddelId, "LaegemiddelId burde matche");
+        testLogger.LogInformation("Test finished");
         //Kunne med fordel have tjekket på patientId, men patientId er ikke tilgængelig parameter på ordination eller dagligfast
 
     }
@@ -78,10 +90,16 @@ public class ServiceTest
 
         Patient patient = service.GetPatienter().First();
         Laegemiddel lm = service.GetLaegemidler().First();
+        Dosis[] doser = new Dosis[3]
+        {
+            new Dosis { DosisId = 20, tid = DateTime.Parse("0001-01-01T06:30:00"), antal = 2 },
+            new Dosis { DosisId = 21, tid = DateTime.Parse("0001-01-01T011:30:00"), antal = 4 },
+            new Dosis { DosisId = 22, tid = DateTime.Parse("0001-01-01T017:30:00"), antal = 2 }
+        };
 
         Assert.AreEqual(1, service.GetDagligSkæve().Count());
 
-        service.OpretDagligFast(patient.PatientId, lm.LaegemiddelId, 2, 2, 1, 0, DateTime.Now, DateTime.Now.AddDays(3));
+        service.OpretDagligSkaev(patient.PatientId, lm.LaegemiddelId, doser, DateTime.Now, DateTime.Now.AddDays(3));
 
         Assert.AreEqual(2, service.GetDagligFaste().Count());
 

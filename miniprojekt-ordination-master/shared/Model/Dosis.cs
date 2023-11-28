@@ -3,7 +3,7 @@ namespace shared.Model;
 public class Dosis
 {
     public int DosisId { get; set; }
-    public DateTime tid { get; set; }
+    public DateTime tid { get; set; } 
     public double antal { get; set; }
 
     public Dosis(DateTime tid, double antal)
@@ -16,6 +16,8 @@ public class Dosis
     {
         this.tid = new DateTime();
         this.antal = 0;
+
+        string time = DateTime.Now.ToString("HH:mm");
     }
 
     public override String ToString()
