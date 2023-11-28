@@ -16,8 +16,6 @@ public class Dosis
     {
         this.tid = new DateTime();
         this.antal = 0;
-
-        string time = DateTime.Now.ToString("HH:mm");
     }
 
     public override String ToString()

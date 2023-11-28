@@ -6,6 +6,7 @@ using Service;
 using Data;
 using shared.Model;
 using Microsoft.Extensions.Logging;
+using shared;
 
 [TestClass]
 public class ServiceTest
@@ -26,6 +27,9 @@ public class ServiceTest
         service.SeedData();
     }
 
+
+
+
     [TestMethod]
     public void PatientsExist()
     {
@@ -36,28 +40,27 @@ public class ServiceTest
     [TestMethod]
     public void OpretDagligFast()
     {
-        Patient patient = service.GetPatienter().First();
-        Laegemiddel lm = service.GetLaegemidler().First();
-        double initialCount = service.GetDagligFaste().Count();
+        testLogger.LogInformation("Calling OpretDagligFastTest method...");
+        testLogger.LogInformation($"Test started at: {DateTime.Now}");
 
-        testLogger.LogInformation("Antal dagligfaste ordinationer:" + initialCount);
-        Assert.AreEqual(1, service.GetDagligFaste().Count());
-      
+        Patient patient1 = service.GetPatienter().First();
+        Laegemiddel lm1 = service.GetLaegemidler().First(); 
 
-        service.OpretDagligFast(patient.PatientId, lm.LaegemiddelId,
-            2, 2, 1, 0, DateTime.Now, DateTime.Now.AddDays(3));
 
-        double updatedCount = service.GetDagligFaste().Count();
+        testLogger.LogInformation("Antal dagligfaste ordinationer:" + service.GetDagligFaste().Count());
+        Assert.AreEqual(1, service.GetDagligFaste().Count());  
 
-        testLogger.LogInformation("Antal dagligfaste ordinationer:" + updatedCount);
+        service.OpretDagligFast(patient1.PatientId, lm1.LaegemiddelId,2, 2, 1, 0, DateTime.Now, DateTime.Now.AddDays(3));
+
+        // Sammenligner forventet resultat med faktisk resultat og logger 
         Assert.AreEqual(2, service.GetDagligFaste().Count());
-
-        var addedDagligFast = service.GetDagligFaste().Last(); // Finder sidste tilføjede ordination for at eftertjekke data
+        testLogger.LogInformation("Antal dagligfaste ordinationer:" + service.GetDagligFaste().Count());
+        var addedDagligFast = service.GetDagligFaste().Last(); 
 
         Assert.IsNotNull(addedDagligFast, "The added DagligFast should not be null");
-        Assert.AreEqual(lm.LaegemiddelId, addedDagligFast.laegemiddel.LaegemiddelId, "LaegemiddelId burde matche");
-        testLogger.LogInformation("Test finished");
-        //Kunne med fordel have tjekket på patientId, men patientId er ikke tilgængelig parameter på ordination eller dagligfast
+        Assert.AreEqual(lm1.LaegemiddelId, addedDagligFast.laegemiddel.LaegemiddelId, "LaegemiddelId burde matche");
+
+        testLogger.LogInformation($"Test finished at: {DateTime.Now}");
 
     }
 
@@ -65,6 +68,9 @@ public class ServiceTest
     [TestMethod]
     public void OpretPNTest()
     {
+        testLogger.LogInformation("Calling OpretPNTest method...");
+        testLogger.LogInformation($"Test started at: {DateTime.Now}");
+
         Patient patient = service.GetPatienter().First();
         Laegemiddel lm = service.GetLaegemidler().First();
 
@@ -73,13 +79,15 @@ public class ServiceTest
         service.OpretPN(patient.PatientId, lm.LaegemiddelId, 6, DateTime.Now, DateTime.Now.AddDays(3));
 
         int updatedCount = service.GetPNs().Count();
+
+
+        // Sammenligner forventet resultat med faktisk resultat 
         Assert.AreEqual(initialCount + 1, updatedCount);
-
-        var addedPN = service.GetPNs().Last(); //Finder sidste tilføjede pn ordination for at eftertjekke data 
-
+        var addedPN = service.GetPNs().Last(); 
         Assert.IsNotNull(addedPN, "Tilføjet PN burde ikke være nul");
         Assert.AreEqual(lm.LaegemiddelId, addedPN.laegemiddel.LaegemiddelId, "LaegemiddelId burde matche");
-        //Kunne med fordel have tjekket på patientId, men patientId er ikke tilgængelig parameter på ordination eller dagligfast
+
+        testLogger.LogInformation($"Test finished at: {DateTime.Now}");
 
     }
 
@@ -87,27 +95,35 @@ public class ServiceTest
     [TestMethod]
     public void OpretDagligSkaevTest()
     {
+        testLogger.LogInformation("Calling OpretDagligSkævTest method...");
+        testLogger.LogInformation($"Test started at: {DateTime.Now}");
 
         Patient patient = service.GetPatienter().First();
         Laegemiddel lm = service.GetLaegemidler().First();
-        Dosis[] doser = new Dosis[3]
-        {
-            new Dosis { DosisId = 20, tid = DateTime.Parse("0001-01-01T06:30:00"), antal = 2 },
-            new Dosis { DosisId = 21, tid = DateTime.Parse("0001-01-01T011:30:00"), antal = 4 },
-            new Dosis { DosisId = 22, tid = DateTime.Parse("0001-01-01T017:30:00"), antal = 2 }
-        };
+        testLogger.LogInformation("Patient og lægemiddel: " + patient.PatientId + ", " +  lm.LaegemiddelId);
 
         Assert.AreEqual(1, service.GetDagligSkæve().Count());
+        testLogger.LogInformation("Antal ordinationer før oprettelse:" + service.GetDagligSkæve().Count());
 
-        service.OpretDagligSkaev(patient.PatientId, lm.LaegemiddelId, doser, DateTime.Now, DateTime.Now.AddDays(3));
+        //Ppretter en ny dagligSkæv med 7 dages periode 
+        service.OpretDagligSkaev(patient.PatientId, lm.LaegemiddelId,
+            new Dosis[]  {
+                new Dosis(Util.CreateTimeOnly(12, 0, 0), 0.5),
+                new Dosis(Util.CreateTimeOnly(12, 40, 0), 1),
+                new Dosis(Util.CreateTimeOnly(16, 0, 0), 2.5),
+                new Dosis(Util.CreateTimeOnly(18, 45, 0), 3)
 
-        Assert.AreEqual(2, service.GetDagligFaste().Count());
+            }, new DateTime(2023, 01, 01), new DateTime(2023, 01, 08));
 
-        var addedDagligSkæv = service.GetDagligSkæve().Last(); // Finder sidste tilføjede ordination for at eftertjekke data
-
+        // Sammenligner forventet resultat med faktisk resultat 
+        var addedDagligSkæv = service.GetDagligSkæve().Last(); 
+        testLogger.LogInformation("Antal ordinationer efter oprettelse:" + service.GetDagligSkæve().Count());
+        Assert.AreEqual(2, service.GetDagligSkæve().Count());
         Assert.IsNotNull(addedDagligSkæv, "The added DagligFast should not be null");
         Assert.AreEqual(lm.LaegemiddelId, addedDagligSkæv.laegemiddel.LaegemiddelId, "LaegemiddelId burde matche");
-        //Kunne med fordel have tjekket på patientId, men patientId er ikke tilgængelig parameter på ordination eller dagligfast
+
+        testLogger.LogInformation($"Test finished at: {DateTime.Now}");
+
 
     }
 
@@ -115,7 +131,10 @@ public class ServiceTest
     [TestMethod]
     public void GetAnbefaletDosisPerDøgnTest()
     {
-        // Arrange
+        testLogger.LogInformation("Calling GetAnbefaletDosisPerDøgnTest method...");
+        testLogger.LogInformation($"Test started at: {DateTime.Now}");
+
+        // Opretter nye patienter med vægt værdier vi skal anvende i testen
         var p1 = new Patient { PatientId = 10, vaegt = 20 };  //TC3
         var p2 = new Patient { PatientId = 11, vaegt = 24.9 }; //TC4
         var p3 = new Patient { PatientId = 12, vaegt = 25 }; //TC5 (grænseværdi)
@@ -132,6 +151,7 @@ public class ServiceTest
         var methot = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 4);
         var prednis = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 5);
 
+        //tilføjer nye patienter 
         service.AddPatient(p1);
         service.AddPatient(p2);
         service.AddPatient(p3); 
@@ -141,7 +161,7 @@ public class ServiceTest
         service.AddPatient(p7);
 
 
-        // Act
+        // Henter anbefalet dosis
         double TC3 = service.GetAnbefaletDosisPerDøgn(p1.PatientId, acetyl.LaegemiddelId);
         double TC4 = service.GetAnbefaletDosisPerDøgn(p2.PatientId, acetyl.LaegemiddelId);
         double TC5 = service.GetAnbefaletDosisPerDøgn(p3.PatientId, acetyl.LaegemiddelId);
@@ -150,10 +170,13 @@ public class ServiceTest
         double TC8 = service.GetAnbefaletDosisPerDøgn(p6.PatientId, acetyl.LaegemiddelId);
         double TC9 = service.GetAnbefaletDosisPerDøgn(p7.PatientId, acetyl.LaegemiddelId);
 
-        // Assert
+        // Sammenligner forventet resultat med faktisk resultat 
         Assert.AreEqual(2, TC3);
         Assert.AreEqual(2.49, TC4);
-        
+        //Assert.AreEqual()
+
+
+        testLogger.LogInformation($"Test finished at: {DateTime.Now}");
     }
 
 

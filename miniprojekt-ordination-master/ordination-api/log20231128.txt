@@ -702,3 +702,343 @@ LIMIT 1
 2023-11-28 18:48:20.999 +01:00 [INF] Application started. Press Ctrl+C to shut down.
 2023-11-28 18:48:21.001 +01:00 [INF] Hosting environment: Development
 2023-11-28 18:48:21.003 +01:00 [INF] Content root path: C:\Users\Stationær\Documents\Repositories\SoftwareArkitektur\TestProjekt23\miniprojekt-ordination-master\ordination-api\
+2023-11-28 18:55:00.124 +01:00 [INF] Entity Framework Core 6.0.9 initialized 'OrdinationContext' using provider 'Microsoft.EntityFrameworkCore.Sqlite:6.0.9' with options: None
+2023-11-28 18:55:00.460 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 18:55:00.774 +01:00 [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."PatientId", "p"."cprnr", "p"."navn", "p"."vaegt"
+FROM "Patienter" AS "p"
+LIMIT 1
+2023-11-28 18:55:00.910 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 18:55:00.919 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "l"."LaegemiddelId", "l"."enhed", "l"."enhedPrKgPrDoegnLet", "l"."enhedPrKgPrDoegnNormal", "l"."enhedPrKgPrDoegnTung", "l"."navn"
+FROM "Laegemiddler" AS "l"
+LIMIT 1
+2023-11-28 18:55:00.940 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 18:55:00.952 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "o"."OrdinationId", "o"."Discriminator", "o"."LaegemiddelId", "o"."PatientId", "o"."slutDen", "o"."startDen", "o"."AftenDosisDosisId", "o"."MiddagDosisDosisId", "o"."MorgenDosisDosisId", "o"."NatDosisDosisId", "o"."antalEnheder"
+FROM "Ordinationer" AS "o"
+LIMIT 1
+2023-11-28 18:55:01.203 +01:00 [INF] Now listening on: https://localhost:8080
+2023-11-28 18:55:01.211 +01:00 [INF] Now listening on: http://localhost:8081
+2023-11-28 18:55:01.220 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-28 18:55:01.222 +01:00 [INF] Hosting environment: Development
+2023-11-28 18:55:01.223 +01:00 [INF] Content root path: C:\Users\Stationær\Documents\Repositories\SoftwareArkitektur\TestProjekt23\miniprojekt-ordination-master\ordination-api\
+2023-11-28 19:10:29.987 +01:00 [INF] Entity Framework Core 6.0.9 initialized 'OrdinationContext' using provider 'Microsoft.EntityFrameworkCore.Sqlite:6.0.9' with options: None
+2023-11-28 19:10:30.205 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:10:30.395 +01:00 [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."PatientId", "p"."cprnr", "p"."navn", "p"."vaegt"
+FROM "Patienter" AS "p"
+LIMIT 1
+2023-11-28 19:10:30.487 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:10:30.493 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "l"."LaegemiddelId", "l"."enhed", "l"."enhedPrKgPrDoegnLet", "l"."enhedPrKgPrDoegnNormal", "l"."enhedPrKgPrDoegnTung", "l"."navn"
+FROM "Laegemiddler" AS "l"
+LIMIT 1
+2023-11-28 19:10:30.513 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:10:30.528 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "o"."OrdinationId", "o"."Discriminator", "o"."LaegemiddelId", "o"."PatientId", "o"."slutDen", "o"."startDen", "o"."AftenDosisDosisId", "o"."MiddagDosisDosisId", "o"."MorgenDosisDosisId", "o"."NatDosisDosisId", "o"."antalEnheder"
+FROM "Ordinationer" AS "o"
+LIMIT 1
+2023-11-28 19:10:30.747 +01:00 [INF] Now listening on: https://localhost:8080
+2023-11-28 19:10:30.748 +01:00 [INF] Now listening on: http://localhost:8081
+2023-11-28 19:10:30.754 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-28 19:10:30.755 +01:00 [INF] Hosting environment: Development
+2023-11-28 19:10:30.756 +01:00 [INF] Content root path: C:\Users\Stationær\Documents\Repositories\SoftwareArkitektur\TestProjekt23\miniprojekt-ordination-master\ordination-api\
+2023-11-28 19:16:07.000 +01:00 [INF] Entity Framework Core 6.0.9 initialized 'OrdinationContext' using provider 'Microsoft.EntityFrameworkCore.Sqlite:6.0.9' with options: None
+2023-11-28 19:16:07.410 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:16:07.632 +01:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."PatientId", "p"."cprnr", "p"."navn", "p"."vaegt"
+FROM "Patienter" AS "p"
+LIMIT 1
+2023-11-28 19:16:07.738 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:16:07.748 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "l"."LaegemiddelId", "l"."enhed", "l"."enhedPrKgPrDoegnLet", "l"."enhedPrKgPrDoegnNormal", "l"."enhedPrKgPrDoegnTung", "l"."navn"
+FROM "Laegemiddler" AS "l"
+LIMIT 1
+2023-11-28 19:16:07.780 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:16:07.793 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "o"."OrdinationId", "o"."Discriminator", "o"."LaegemiddelId", "o"."PatientId", "o"."slutDen", "o"."startDen", "o"."AftenDosisDosisId", "o"."MiddagDosisDosisId", "o"."MorgenDosisDosisId", "o"."NatDosisDosisId", "o"."antalEnheder"
+FROM "Ordinationer" AS "o"
+LIMIT 1
+2023-11-28 19:16:08.060 +01:00 [INF] Now listening on: https://localhost:8080
+2023-11-28 19:16:08.065 +01:00 [INF] Now listening on: http://localhost:8081
+2023-11-28 19:16:08.073 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-28 19:16:08.074 +01:00 [INF] Hosting environment: Development
+2023-11-28 19:16:08.075 +01:00 [INF] Content root path: C:\Users\Stationær\Documents\Repositories\SoftwareArkitektur\TestProjekt23\miniprojekt-ordination-master\ordination-api\
+2023-11-28 19:17:42.282 +01:00 [INF] Entity Framework Core 6.0.9 initialized 'OrdinationContext' using provider 'Microsoft.EntityFrameworkCore.Sqlite:6.0.9' with options: None
+2023-11-28 19:17:42.550 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:17:42.805 +01:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."PatientId", "p"."cprnr", "p"."navn", "p"."vaegt"
+FROM "Patienter" AS "p"
+LIMIT 1
+2023-11-28 19:17:42.879 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:17:42.886 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "l"."LaegemiddelId", "l"."enhed", "l"."enhedPrKgPrDoegnLet", "l"."enhedPrKgPrDoegnNormal", "l"."enhedPrKgPrDoegnTung", "l"."navn"
+FROM "Laegemiddler" AS "l"
+LIMIT 1
+2023-11-28 19:17:42.909 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:17:42.925 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "o"."OrdinationId", "o"."Discriminator", "o"."LaegemiddelId", "o"."PatientId", "o"."slutDen", "o"."startDen", "o"."AftenDosisDosisId", "o"."MiddagDosisDosisId", "o"."MorgenDosisDosisId", "o"."NatDosisDosisId", "o"."antalEnheder"
+FROM "Ordinationer" AS "o"
+LIMIT 1
+2023-11-28 19:17:43.166 +01:00 [INF] Now listening on: https://localhost:8080
+2023-11-28 19:17:43.167 +01:00 [INF] Now listening on: http://localhost:8081
+2023-11-28 19:17:43.183 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-28 19:17:43.184 +01:00 [INF] Hosting environment: Development
+2023-11-28 19:17:43.188 +01:00 [INF] Content root path: C:\Users\Stationær\Documents\Repositories\SoftwareArkitektur\TestProjekt23\miniprojekt-ordination-master\ordination-api\
+2023-11-28 19:19:48.553 +01:00 [INF] Entity Framework Core 6.0.9 initialized 'OrdinationContext' using provider 'Microsoft.EntityFrameworkCore.Sqlite:6.0.9' with options: None
+2023-11-28 19:19:48.915 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:19:49.181 +01:00 [INF] Executed DbCommand (13ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."PatientId", "p"."cprnr", "p"."navn", "p"."vaegt"
+FROM "Patienter" AS "p"
+LIMIT 1
+2023-11-28 19:19:49.262 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:19:49.268 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "l"."LaegemiddelId", "l"."enhed", "l"."enhedPrKgPrDoegnLet", "l"."enhedPrKgPrDoegnNormal", "l"."enhedPrKgPrDoegnTung", "l"."navn"
+FROM "Laegemiddler" AS "l"
+LIMIT 1
+2023-11-28 19:19:49.287 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:19:49.298 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "o"."OrdinationId", "o"."Discriminator", "o"."LaegemiddelId", "o"."PatientId", "o"."slutDen", "o"."startDen", "o"."AftenDosisDosisId", "o"."MiddagDosisDosisId", "o"."MorgenDosisDosisId", "o"."NatDosisDosisId", "o"."antalEnheder"
+FROM "Ordinationer" AS "o"
+LIMIT 1
+2023-11-28 19:19:49.502 +01:00 [INF] Now listening on: https://localhost:8080
+2023-11-28 19:19:49.504 +01:00 [INF] Now listening on: http://localhost:8081
+2023-11-28 19:19:49.511 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-28 19:19:49.513 +01:00 [INF] Hosting environment: Development
+2023-11-28 19:19:49.514 +01:00 [INF] Content root path: C:\Users\Stationær\Documents\Repositories\SoftwareArkitektur\TestProjekt23\miniprojekt-ordination-master\ordination-api\
+2023-11-28 19:20:22.154 +01:00 [INF] Entity Framework Core 6.0.9 initialized 'OrdinationContext' using provider 'Microsoft.EntityFrameworkCore.Sqlite:6.0.9' with options: None
+2023-11-28 19:20:22.455 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:20:22.659 +01:00 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."PatientId", "p"."cprnr", "p"."navn", "p"."vaegt"
+FROM "Patienter" AS "p"
+LIMIT 1
+2023-11-28 19:20:22.744 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:20:22.750 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "l"."LaegemiddelId", "l"."enhed", "l"."enhedPrKgPrDoegnLet", "l"."enhedPrKgPrDoegnNormal", "l"."enhedPrKgPrDoegnTung", "l"."navn"
+FROM "Laegemiddler" AS "l"
+LIMIT 1
+2023-11-28 19:20:22.769 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:20:22.781 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "o"."OrdinationId", "o"."Discriminator", "o"."LaegemiddelId", "o"."PatientId", "o"."slutDen", "o"."startDen", "o"."AftenDosisDosisId", "o"."MiddagDosisDosisId", "o"."MorgenDosisDosisId", "o"."NatDosisDosisId", "o"."antalEnheder"
+FROM "Ordinationer" AS "o"
+LIMIT 1
+2023-11-28 19:20:23.014 +01:00 [INF] Now listening on: https://localhost:8080
+2023-11-28 19:20:23.015 +01:00 [INF] Now listening on: http://localhost:8081
+2023-11-28 19:20:23.023 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-28 19:20:23.024 +01:00 [INF] Hosting environment: Development
+2023-11-28 19:20:23.025 +01:00 [INF] Content root path: C:\Users\Stationær\Documents\Repositories\SoftwareArkitektur\TestProjekt23\miniprojekt-ordination-master\ordination-api\
+2023-11-28 19:21:20.358 +01:00 [INF] Entity Framework Core 6.0.9 initialized 'OrdinationContext' using provider 'Microsoft.EntityFrameworkCore.Sqlite:6.0.9' with options: None
+2023-11-28 19:21:20.613 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:21:20.822 +01:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."PatientId", "p"."cprnr", "p"."navn", "p"."vaegt"
+FROM "Patienter" AS "p"
+LIMIT 1
+2023-11-28 19:21:20.900 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:21:20.906 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "l"."LaegemiddelId", "l"."enhed", "l"."enhedPrKgPrDoegnLet", "l"."enhedPrKgPrDoegnNormal", "l"."enhedPrKgPrDoegnTung", "l"."navn"
+FROM "Laegemiddler" AS "l"
+LIMIT 1
+2023-11-28 19:21:20.925 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:21:20.934 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "o"."OrdinationId", "o"."Discriminator", "o"."LaegemiddelId", "o"."PatientId", "o"."slutDen", "o"."startDen", "o"."AftenDosisDosisId", "o"."MiddagDosisDosisId", "o"."MorgenDosisDosisId", "o"."NatDosisDosisId", "o"."antalEnheder"
+FROM "Ordinationer" AS "o"
+LIMIT 1
+2023-11-28 19:21:21.131 +01:00 [INF] Now listening on: https://localhost:8080
+2023-11-28 19:21:21.133 +01:00 [INF] Now listening on: http://localhost:8081
+2023-11-28 19:21:21.142 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-28 19:21:21.144 +01:00 [INF] Hosting environment: Development
+2023-11-28 19:21:21.145 +01:00 [INF] Content root path: C:\Users\Stationær\Documents\Repositories\SoftwareArkitektur\TestProjekt23\miniprojekt-ordination-master\ordination-api\
+2023-11-28 19:23:28.923 +01:00 [INF] Entity Framework Core 6.0.9 initialized 'OrdinationContext' using provider 'Microsoft.EntityFrameworkCore.Sqlite:6.0.9' with options: None
+2023-11-28 19:23:29.265 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:23:29.520 +01:00 [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."PatientId", "p"."cprnr", "p"."navn", "p"."vaegt"
+FROM "Patienter" AS "p"
+LIMIT 1
+2023-11-28 19:23:29.600 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:23:29.607 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "l"."LaegemiddelId", "l"."enhed", "l"."enhedPrKgPrDoegnLet", "l"."enhedPrKgPrDoegnNormal", "l"."enhedPrKgPrDoegnTung", "l"."navn"
+FROM "Laegemiddler" AS "l"
+LIMIT 1
+2023-11-28 19:23:29.637 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:23:29.652 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "o"."OrdinationId", "o"."Discriminator", "o"."LaegemiddelId", "o"."PatientId", "o"."slutDen", "o"."startDen", "o"."AftenDosisDosisId", "o"."MiddagDosisDosisId", "o"."MorgenDosisDosisId", "o"."NatDosisDosisId", "o"."antalEnheder"
+FROM "Ordinationer" AS "o"
+LIMIT 1
+2023-11-28 19:23:29.916 +01:00 [INF] Now listening on: https://localhost:8080
+2023-11-28 19:23:29.918 +01:00 [INF] Now listening on: http://localhost:8081
+2023-11-28 19:23:29.923 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-28 19:23:29.926 +01:00 [INF] Hosting environment: Development
+2023-11-28 19:23:29.927 +01:00 [INF] Content root path: C:\Users\Stationær\Documents\Repositories\SoftwareArkitektur\TestProjekt23\miniprojekt-ordination-master\ordination-api\
+2023-11-28 19:23:47.298 +01:00 [INF] Entity Framework Core 6.0.9 initialized 'OrdinationContext' using provider 'Microsoft.EntityFrameworkCore.Sqlite:6.0.9' with options: None
+2023-11-28 19:23:47.496 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:23:47.677 +01:00 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."PatientId", "p"."cprnr", "p"."navn", "p"."vaegt"
+FROM "Patienter" AS "p"
+LIMIT 1
+2023-11-28 19:23:47.746 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:23:47.751 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "l"."LaegemiddelId", "l"."enhed", "l"."enhedPrKgPrDoegnLet", "l"."enhedPrKgPrDoegnNormal", "l"."enhedPrKgPrDoegnTung", "l"."navn"
+FROM "Laegemiddler" AS "l"
+LIMIT 1
+2023-11-28 19:23:47.768 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:23:47.777 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "o"."OrdinationId", "o"."Discriminator", "o"."LaegemiddelId", "o"."PatientId", "o"."slutDen", "o"."startDen", "o"."AftenDosisDosisId", "o"."MiddagDosisDosisId", "o"."MorgenDosisDosisId", "o"."NatDosisDosisId", "o"."antalEnheder"
+FROM "Ordinationer" AS "o"
+LIMIT 1
+2023-11-28 19:23:47.963 +01:00 [INF] Now listening on: https://localhost:8080
+2023-11-28 19:23:47.966 +01:00 [INF] Now listening on: http://localhost:8081
+2023-11-28 19:23:47.972 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-28 19:23:47.973 +01:00 [INF] Hosting environment: Development
+2023-11-28 19:23:47.975 +01:00 [INF] Content root path: C:\Users\Stationær\Documents\Repositories\SoftwareArkitektur\TestProjekt23\miniprojekt-ordination-master\ordination-api\
+2023-11-28 19:25:04.266 +01:00 [INF] Entity Framework Core 6.0.9 initialized 'OrdinationContext' using provider 'Microsoft.EntityFrameworkCore.Sqlite:6.0.9' with options: None
+2023-11-28 19:25:04.517 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:25:04.867 +01:00 [INF] Executed DbCommand (45ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."PatientId", "p"."cprnr", "p"."navn", "p"."vaegt"
+FROM "Patienter" AS "p"
+LIMIT 1
+2023-11-28 19:25:04.951 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:25:04.957 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "l"."LaegemiddelId", "l"."enhed", "l"."enhedPrKgPrDoegnLet", "l"."enhedPrKgPrDoegnNormal", "l"."enhedPrKgPrDoegnTung", "l"."navn"
+FROM "Laegemiddler" AS "l"
+LIMIT 1
+2023-11-28 19:25:04.984 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:25:04.996 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "o"."OrdinationId", "o"."Discriminator", "o"."LaegemiddelId", "o"."PatientId", "o"."slutDen", "o"."startDen", "o"."AftenDosisDosisId", "o"."MiddagDosisDosisId", "o"."MorgenDosisDosisId", "o"."NatDosisDosisId", "o"."antalEnheder"
+FROM "Ordinationer" AS "o"
+LIMIT 1
+2023-11-28 19:25:05.212 +01:00 [INF] Now listening on: https://localhost:8080
+2023-11-28 19:25:05.213 +01:00 [INF] Now listening on: http://localhost:8081
+2023-11-28 19:25:05.219 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-28 19:25:05.221 +01:00 [INF] Hosting environment: Development
+2023-11-28 19:25:05.223 +01:00 [INF] Content root path: C:\Users\Stationær\Documents\Repositories\SoftwareArkitektur\TestProjekt23\miniprojekt-ordination-master\ordination-api\
+2023-11-28 19:25:23.163 +01:00 [INF] Entity Framework Core 6.0.9 initialized 'OrdinationContext' using provider 'Microsoft.EntityFrameworkCore.Sqlite:6.0.9' with options: None
+2023-11-28 19:25:23.441 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:25:23.689 +01:00 [INF] Executed DbCommand (17ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."PatientId", "p"."cprnr", "p"."navn", "p"."vaegt"
+FROM "Patienter" AS "p"
+LIMIT 1
+2023-11-28 19:25:23.783 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:25:23.789 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "l"."LaegemiddelId", "l"."enhed", "l"."enhedPrKgPrDoegnLet", "l"."enhedPrKgPrDoegnNormal", "l"."enhedPrKgPrDoegnTung", "l"."navn"
+FROM "Laegemiddler" AS "l"
+LIMIT 1
+2023-11-28 19:25:23.811 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:25:23.825 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "o"."OrdinationId", "o"."Discriminator", "o"."LaegemiddelId", "o"."PatientId", "o"."slutDen", "o"."startDen", "o"."AftenDosisDosisId", "o"."MiddagDosisDosisId", "o"."MorgenDosisDosisId", "o"."NatDosisDosisId", "o"."antalEnheder"
+FROM "Ordinationer" AS "o"
+LIMIT 1
+2023-11-28 19:25:24.018 +01:00 [INF] Now listening on: https://localhost:8080
+2023-11-28 19:25:24.019 +01:00 [INF] Now listening on: http://localhost:8081
+2023-11-28 19:25:24.027 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-28 19:25:24.029 +01:00 [INF] Hosting environment: Development
+2023-11-28 19:25:24.030 +01:00 [INF] Content root path: C:\Users\Stationær\Documents\Repositories\SoftwareArkitektur\TestProjekt23\miniprojekt-ordination-master\ordination-api\
+2023-11-28 19:35:55.695 +01:00 [INF] Entity Framework Core 6.0.9 initialized 'OrdinationContext' using provider 'Microsoft.EntityFrameworkCore.Sqlite:6.0.9' with options: None
+2023-11-28 19:35:56.092 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:35:56.402 +01:00 [INF] Executed DbCommand (12ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."PatientId", "p"."cprnr", "p"."navn", "p"."vaegt"
+FROM "Patienter" AS "p"
+LIMIT 1
+2023-11-28 19:35:56.708 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:35:57.013 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "l"."LaegemiddelId", "l"."enhed", "l"."enhedPrKgPrDoegnLet", "l"."enhedPrKgPrDoegnNormal", "l"."enhedPrKgPrDoegnTung", "l"."navn"
+FROM "Laegemiddler" AS "l"
+LIMIT 1
+2023-11-28 19:35:57.035 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:35:57.045 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "o"."OrdinationId", "o"."Discriminator", "o"."LaegemiddelId", "o"."PatientId", "o"."slutDen", "o"."startDen", "o"."AftenDosisDosisId", "o"."MiddagDosisDosisId", "o"."MorgenDosisDosisId", "o"."NatDosisDosisId", "o"."antalEnheder"
+FROM "Ordinationer" AS "o"
+LIMIT 1
+2023-11-28 19:35:57.275 +01:00 [INF] Now listening on: https://localhost:8080
+2023-11-28 19:35:57.276 +01:00 [INF] Now listening on: http://localhost:8081
+2023-11-28 19:35:57.282 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-28 19:35:57.287 +01:00 [INF] Hosting environment: Development
+2023-11-28 19:35:57.287 +01:00 [INF] Content root path: C:\Users\Stationær\Documents\Repositories\SoftwareArkitektur\TestProjekt23\miniprojekt-ordination-master\ordination-api\
+2023-11-28 19:37:31.164 +01:00 [INF] Entity Framework Core 6.0.9 initialized 'OrdinationContext' using provider 'Microsoft.EntityFrameworkCore.Sqlite:6.0.9' with options: None
+2023-11-28 19:37:31.426 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:37:31.650 +01:00 [INF] Executed DbCommand (15ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."PatientId", "p"."cprnr", "p"."navn", "p"."vaegt"
+FROM "Patienter" AS "p"
+LIMIT 1
+2023-11-28 19:37:31.728 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:37:31.737 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "l"."LaegemiddelId", "l"."enhed", "l"."enhedPrKgPrDoegnLet", "l"."enhedPrKgPrDoegnNormal", "l"."enhedPrKgPrDoegnTung", "l"."navn"
+FROM "Laegemiddler" AS "l"
+LIMIT 1
+2023-11-28 19:37:31.754 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:37:31.763 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "o"."OrdinationId", "o"."Discriminator", "o"."LaegemiddelId", "o"."PatientId", "o"."slutDen", "o"."startDen", "o"."AftenDosisDosisId", "o"."MiddagDosisDosisId", "o"."MorgenDosisDosisId", "o"."NatDosisDosisId", "o"."antalEnheder"
+FROM "Ordinationer" AS "o"
+LIMIT 1
+2023-11-28 19:37:31.968 +01:00 [INF] Now listening on: https://localhost:8080
+2023-11-28 19:37:31.969 +01:00 [INF] Now listening on: http://localhost:8081
+2023-11-28 19:37:31.975 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-28 19:37:31.976 +01:00 [INF] Hosting environment: Development
+2023-11-28 19:37:31.977 +01:00 [INF] Content root path: C:\Users\Stationær\Documents\Repositories\SoftwareArkitektur\TestProjekt23\miniprojekt-ordination-master\ordination-api\
+2023-11-28 19:38:06.342 +01:00 [INF] Entity Framework Core 6.0.9 initialized 'OrdinationContext' using provider 'Microsoft.EntityFrameworkCore.Sqlite:6.0.9' with options: None
+2023-11-28 19:38:06.588 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:38:06.805 +01:00 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."PatientId", "p"."cprnr", "p"."navn", "p"."vaegt"
+FROM "Patienter" AS "p"
+LIMIT 1
+2023-11-28 19:38:06.892 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:38:06.902 +01:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "l"."LaegemiddelId", "l"."enhed", "l"."enhedPrKgPrDoegnLet", "l"."enhedPrKgPrDoegnNormal", "l"."enhedPrKgPrDoegnTung", "l"."navn"
+FROM "Laegemiddler" AS "l"
+LIMIT 1
+2023-11-28 19:38:06.930 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 19:38:06.942 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "o"."OrdinationId", "o"."Discriminator", "o"."LaegemiddelId", "o"."PatientId", "o"."slutDen", "o"."startDen", "o"."AftenDosisDosisId", "o"."MiddagDosisDosisId", "o"."MorgenDosisDosisId", "o"."NatDosisDosisId", "o"."antalEnheder"
+FROM "Ordinationer" AS "o"
+LIMIT 1
+2023-11-28 19:38:07.133 +01:00 [INF] Now listening on: https://localhost:8080
+2023-11-28 19:38:07.134 +01:00 [INF] Now listening on: http://localhost:8081
+2023-11-28 19:38:07.140 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-28 19:38:07.142 +01:00 [INF] Hosting environment: Development
+2023-11-28 19:38:07.143 +01:00 [INF] Content root path: C:\Users\Stationær\Documents\Repositories\SoftwareArkitektur\TestProjekt23\miniprojekt-ordination-master\ordination-api\
+2023-11-28 20:27:10.940 +01:00 [INF] Entity Framework Core 6.0.9 initialized 'OrdinationContext' using provider 'Microsoft.EntityFrameworkCore.Sqlite:6.0.9' with options: None
+2023-11-28 20:27:11.151 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 20:27:11.519 +01:00 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."PatientId", "p"."cprnr", "p"."navn", "p"."vaegt"
+FROM "Patienter" AS "p"
+LIMIT 1
+2023-11-28 20:27:11.586 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 20:27:11.591 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "l"."LaegemiddelId", "l"."enhed", "l"."enhedPrKgPrDoegnLet", "l"."enhedPrKgPrDoegnNormal", "l"."enhedPrKgPrDoegnTung", "l"."navn"
+FROM "Laegemiddler" AS "l"
+LIMIT 1
+2023-11-28 20:27:11.608 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-11-28 20:27:11.617 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "o"."OrdinationId", "o"."Discriminator", "o"."LaegemiddelId", "o"."PatientId", "o"."slutDen", "o"."startDen", "o"."AftenDosisDosisId", "o"."MiddagDosisDosisId", "o"."MorgenDosisDosisId", "o"."NatDosisDosisId", "o"."antalEnheder"
+FROM "Ordinationer" AS "o"
+LIMIT 1
+2023-11-28 20:27:11.816 +01:00 [INF] Now listening on: https://localhost:8080
+2023-11-28 20:27:11.819 +01:00 [INF] Now listening on: http://localhost:8081
+2023-11-28 20:27:11.825 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-28 20:27:11.826 +01:00 [INF] Hosting environment: Development
+2023-11-28 20:27:11.827 +01:00 [INF] Content root path: C:\Users\Stationær\Documents\Repositories\SoftwareArkitektur\TestProjekt23\miniprojekt-ordination-master\ordination-api\
+2023-11-28 20:27:12.113 +01:00 [INF] Request starting HTTP/2 GET https://localhost:8080/ - -
+2023-11-28 20:27:12.175 +01:00 [INF] Executing endpoint 'HTTP: GET /'
+2023-11-28 20:27:12.183 +01:00 [INF] Writing value of type 'System.String' with status code '200'.
+2023-11-28 20:27:12.203 +01:00 [INF] Executed endpoint 'HTTP: GET /'
+2023-11-28 20:27:12.211 +01:00 [INF] Request finished HTTP/2 GET https://localhost:8080/ - - - 200 - application/json;+charset=utf-8 102.1265ms
+2023-11-28 20:27:23.073 +01:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:8080/api/patienter/1/beregnAnbefaletDosisPerDøgn - -
+2023-11-28 20:27:23.084 +01:00 [INF] CORS policy execution successful.
+2023-11-28 20:27:23.087 +01:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:8080/api/patienter/1/beregnAnbefaletDosisPerDøgn - - - 204 - - 14.0400ms
+2023-11-28 20:27:23.089 +01:00 [INF] Request starting HTTP/2 POST https://localhost:8080/api/patienter/1/beregnAnbefaletDosisPerDøgn application/json;+charset=utf-8 39
+2023-11-28 20:27:23.095 +01:00 [INF] CORS policy execution successful.
+2023-11-28 20:27:23.100 +01:00 [INF] Executing endpoint 'HTTP: POST /api/patienter/{id}/beregnAnbefaletDosisPerDøgn'
+2023-11-28 20:27:23.169 +01:00 [INF] Entity Framework Core 6.0.9 initialized 'OrdinationContext' using provider 'Microsoft.EntityFrameworkCore.Sqlite:6.0.9' with options: None
+2023-11-28 20:27:23.217 +01:00 [INF] Executed DbCommand (4ms) [Parameters=[@__patientId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."PatientId", "p"."cprnr", "p"."navn", "p"."vaegt"
+FROM "Patienter" AS "p"
+WHERE "p"."PatientId" = @__patientId_0
+LIMIT 1
+2023-11-28 20:27:23.225 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__laegemiddelId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "l"."LaegemiddelId", "l"."enhed", "l"."enhedPrKgPrDoegnLet", "l"."enhedPrKgPrDoegnNormal", "l"."enhedPrKgPrDoegnTung", "l"."navn"
+FROM "Laegemiddler" AS "l"
+WHERE "l"."LaegemiddelId" = @__laegemiddelId_0
+LIMIT 1
+2023-11-28 20:27:23.230 +01:00 [INF] Writing value of type 'shared.Model.AnbefaletDosisDTO' with status code '200'.
+2023-11-28 20:27:23.233 +01:00 [INF] Executed endpoint 'HTTP: POST /api/patienter/{id}/beregnAnbefaletDosisPerDøgn'
+2023-11-28 20:27:23.236 +01:00 [INF] Request finished HTTP/2 POST https://localhost:8080/api/patienter/1/beregnAnbefaletDosisPerDøgn application/json;+charset=utf-8 39 - 200 - application/json;+charset=utf-8 147.1462ms
