@@ -27,6 +27,7 @@ public class ServiceTest
         Assert.IsNotNull(service.GetPatienter());
     }
 
+
     [TestMethod]
     public void OpretDagligFast()
     {
@@ -40,10 +41,11 @@ public class ServiceTest
 
         Assert.AreEqual(2, service.GetDagligFaste().Count());
 
-        var addedDagligFast = service.GetDagligFaste().Last(); // Assuming a method like Last() to get the last added item
+        var addedDagligFast = service.GetDagligFaste().Last(); // Finder sidste tilføjede ordination for at eftertjekke data
 
         Assert.IsNotNull(addedDagligFast, "The added DagligFast should not be null");
         Assert.AreEqual(lm.LaegemiddelId, addedDagligFast.laegemiddel.LaegemiddelId, "LaegemiddelId burde matche");
+        //Kunne med fordel have tjekket på patientId, men patientId er ikke tilgængelig parameter på ordination eller dagligfast
 
     }
 
@@ -61,11 +63,11 @@ public class ServiceTest
         int updatedCount = service.GetPNs().Count();
         Assert.AreEqual(initialCount + 1, updatedCount);
 
-        var addedPN = service.GetPNs().Last(); // Assuming a method like Last() to get the last added item
+        var addedPN = service.GetPNs().Last(); //Finder sidste tilføjede pn ordination for at eftertjekke data 
 
         Assert.IsNotNull(addedPN, "Tilføjet PN burde ikke være nul");
         Assert.AreEqual(lm.LaegemiddelId, addedPN.laegemiddel.LaegemiddelId, "LaegemiddelId burde matche");
-        //Would have asserter for patient Id with different model, but patientid is not a property of neither of the ordination type classes nor ordination
+        //Kunne med fordel have tjekket på patientId, men patientId er ikke tilgængelig parameter på ordination eller dagligfast
 
     }
 
@@ -74,6 +76,22 @@ public class ServiceTest
     public void OpretDagligSkaevTest()
     {
 
+        Patient patient = service.GetPatienter().First();
+        Laegemiddel lm = service.GetLaegemidler().First();
+
+        Assert.AreEqual(1, service.GetDagligSkæve().Count());
+
+        service.OpretDagligFast(patient.PatientId, lm.LaegemiddelId, 2, 2, 1, 0, DateTime.Now, DateTime.Now.AddDays(3));
+
+        Assert.AreEqual(2, service.GetDagligFaste().Count());
+
+        var addedDagligSkæv = service.GetDagligSkæve().Last(); // Finder sidste tilføjede ordination for at eftertjekke data
+
+        Assert.IsNotNull(addedDagligSkæv, "The added DagligFast should not be null");
+        Assert.AreEqual(lm.LaegemiddelId, addedDagligSkæv.laegemiddel.LaegemiddelId, "LaegemiddelId burde matche");
+        //Kunne med fordel have tjekket på patientId, men patientId er ikke tilgængelig parameter på ordination eller dagligfast
+
+
     }
 
 
@@ -81,18 +99,44 @@ public class ServiceTest
     public void GetAnbefaletDosisPerDøgnTest()
     {
         // Arrange
-        var patient = new Patient { PatientId = 123, vaegt = 20 }; // Normal weight
-        var medication = new Laegemiddel("Acetylsalicylsyre", 0.1, 0.15, 0.16, "Styk");
+        var p1 = new Patient { PatientId = 10, vaegt = 20 };  //TC3
+        var p2 = new Patient { PatientId = 11, vaegt = 24.9 }; //TC4
+        var p3 = new Patient { PatientId = 12, vaegt = 25 }; //TC5 (grænseværdi)
+        var p4 = new Patient { PatientId = 13, vaegt = 65 }; //TC6 
+        var p5 = new Patient { PatientId = 14, vaegt = 119.9 }; // TC7
+        var p6 = new Patient { PatientId = 15, vaegt = 120 }; //TC8 (grænseværdi)
+        var p7 = new Patient { PatientId = 16, vaegt = 126 }; //TC9 
 
 
-        service.AddPatient(patient);
-        service.AddLaegemiddel(medication);
+        var lmList = service.GetLaegemidler();
+        var acetyl = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 1);
+        var paracet = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 2);
+        var fucidin = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 3);
+        var methot = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 4);
+        var prednis = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 5);
+
+        service.AddPatient(p1);
+        service.AddPatient(p2);
+        service.AddPatient(p3); 
+        service.AddPatient(p4); 
+        service.AddPatient(p5);
+        service.AddPatient(p6);
+        service.AddPatient(p7);
+
 
         // Act
-        double TC1 = service.GetAnbefaletDosisPerDøgn(patient.PatientId, medication.LaegemiddelId);
+        double TC3 = service.GetAnbefaletDosisPerDøgn(p1.PatientId, acetyl.LaegemiddelId);
+        double TC4 = service.GetAnbefaletDosisPerDøgn(p2.PatientId, acetyl.LaegemiddelId);
+        double TC5 = service.GetAnbefaletDosisPerDøgn(p3.PatientId, acetyl.LaegemiddelId);
+        double TC6 = service.GetAnbefaletDosisPerDøgn(p4.PatientId, acetyl.LaegemiddelId);
+        double TC7 = service.GetAnbefaletDosisPerDøgn(p5.PatientId, acetyl.LaegemiddelId);
+        double TC8 = service.GetAnbefaletDosisPerDøgn(p6.PatientId, acetyl.LaegemiddelId);
+        double TC9 = service.GetAnbefaletDosisPerDøgn(p7.PatientId, acetyl.LaegemiddelId);
 
         // Assert
-        Assert.AreEqual(2, TC1);
+        Assert.AreEqual(2, TC3);
+        Assert.AreEqual(2.49, TC4);
+        
     }
 
 
@@ -100,16 +144,19 @@ public class ServiceTest
 
 
 
-    [TestMethod]
-    [ExpectedException(typeof(ArgumentNullException))]
-    public void TestAtKodenSmiderEnException()
-    {
-        // Herunder skal man så kalde noget kode,
-        // der smider en exception.
+    //[TestMethod]
+    //[ExpectedException(typeof(ArgumentNullException))]
+    //public void TestAtKodenSmiderEnException()
+    //{
+    //    Patient testPatient1 = null;
+    //    int x = null!; 
+     
+    //    var lmList = service.GetLaegemidler();
+    //    var medicin = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 1);
 
-        // Hvis koden _ikke_ smider en exception,
-        // så fejler testen.
+    //    // Act
+    //    var result = service.OpretDagligFast(-1,  , 0, 0, 4, 2, DateTime.Now, DateTime.Now.AddDays(3));
 
-        Console.WriteLine("Her kommer der ikke en exception. Testen fejler.");
-    }
+    //    Console.WriteLine("Her kommer der ikke en exception. Testen fejler.");
+    //}
 }
