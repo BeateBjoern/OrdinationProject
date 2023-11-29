@@ -93,18 +93,18 @@
             responseMessage = "Sludato skal være efter startdato";
             return;
         }
-        try
+        else if(antalEnheder <= 0){
+            responseMessage = "Antal enheder skal være mere end 0";
+        }
+        else
         {
             Console.WriteLine("Opret");
             PN pn = await apiService.OpretPN(Patient.id, laegemiddel.LaegemiddelId, antalEnheder, StartDato, SlutDato);
             Console.WriteLine("Oprettet!");
             Console.WriteLine(pn);
             onDone?.Invoke($"Oprettet PN ordination for {Patient.navn}!");
-        }
-        catch(Exception ex)
-        {
-            Console.WriteLine("Something went wrong " + ex.Message );
-        }
+        };
+       
 
     }
 

@@ -181,6 +181,23 @@ public class ServiceTest
 
 
 
+    [TestMethod]
+    public void GetAnbefaletDosisPerDøgnTestFejler()
+    {
+        var p1 = new Patient { PatientId = 25, vaegt = -20 };  //TC1
+
+        var lmList = service.GetLaegemidler();
+        var acetyl = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 1);
+
+        service.AddPatient(p1);
+
+        double TC1 = service.GetAnbefaletDosisPerDøgn(p1.PatientId, acetyl.LaegemiddelId);
+
+        Assert.AreEqual(2, TC1);
+
+    }
+
+
 
 
 
@@ -190,7 +207,7 @@ public class ServiceTest
     //{
     //    Patient testPatient1 = null;
     //    int x = null!; 
-     
+
     //    var lmList = service.GetLaegemidler();
     //    var medicin = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 1);
 

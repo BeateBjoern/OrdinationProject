@@ -14,21 +14,15 @@ public class PN : Ordination {
     {
     }
 
-    /// <summary>
-    /// Registrerer at der er givet en dosis på dagen givesDen
-    /// Returnerer true hvis givesDen er inden for ordinationens gyldighedsperiode og datoen huskes
-    /// Returner false ellers og datoen givesDen ignoreres
-    /// </summary>
+
+    //Metode vi har lavet 
     public bool givDosis(Dato givesDen) {
 
-
-        if (givesDen == null && givesDen.dato <= startDen || givesDen.dato >= slutDen) { return false; }
-        dates.Add(givesDen);
-
-        Console.WriteLine("givDosis " + givesDen + " " + givesDen.ToString);
-        return true;
+            dates.Add(givesDen);
+            return true;       
     }
 
+    //Metode vi har lavet 
     public override double doegnDosis()
     {
         double sum = 0;

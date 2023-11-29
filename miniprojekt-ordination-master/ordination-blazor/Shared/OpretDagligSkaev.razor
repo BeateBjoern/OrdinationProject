@@ -141,7 +141,20 @@
     private void OpretDosis() {
         Console.WriteLine(Tid);
         Console.WriteLine(Antal);
-        doser.Add(new Dosis(Util.CreateTimeOnly(Tid), Antal));
+
+        if (Antal < 0)
+        {
+            responseMessage = "Du har indtastet et ugyldig antal";
+            return;
+        }
+        else
+        {
+            doser.Add(new Dosis(Util.CreateTimeOnly(Tid), Antal));
+        }
+
+        
+        
+
     }
 
 }
