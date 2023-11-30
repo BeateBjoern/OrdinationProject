@@ -1,29 +1,75 @@
 namespace ordination_test;
-
+using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel.Client;
 using shared.Model;
 
 [TestClass]
-public class DagligFastTest
+public class DagligFastTest : TestBase
 {
 
     [TestMethod]
 
     public void DoegnDosisTest()
     {
-        Dosis morgenDosis = new Dosis { antal = 2, tid = DateTime.Now.Date.AddHours(8) }; // Example datetime for morning
-        Dosis middagDosis = new Dosis { antal = 4, tid = DateTime.Now.Date.AddHours(12) }; // Example datetime for midday
-        Dosis aftenDosis = new Dosis { antal = 3, tid = DateTime.Now.Date.AddHours(18) }; // Example datetime for evening
-        Dosis natDosis = new Dosis { antal = 1, tid = DateTime.Now.Date.AddHours(23) }; // Example datetime for night
 
-        DagligFastTest dagligFastTest = new DagligFastTest();
+        testLogger.LogInformation("Test started at: " + DateTime.Now);
+        //Med gyldig værdi 1 enhed(tæt på grænseværdi)  , TC1 
+        DagligFast TC1 = new DagligFast(
+            new DateTime(2023, 01, 01), new DateTime(2023, 12, 07),
+            new Laegemiddel("Acetylsalicylsyre", 0.1, 0.15, 0.16, "Styk"),
+            1, 0, 0, 0);
 
-        // Assert
-        double expectedTotalDosis = morgenDosis.antal + middagDosis.antal + aftenDosis.antal + natDosis.antal;
-        //Assert.AreEqual(expectedTotalDosis, result, "Total dose should be the sum of individual doses.");
+        double doegnDosisTC1 = TC1.doegnDosis();
+
+        Assert.AreEqual(1, doegnDosisTC1);
+
+        testLogger.LogInformation("TC1 Doegndosis resultat: " + doegnDosisTC1);
+
+        //Med gyldig værdi 10 styk, TC2 
+        DagligFast TC2 = new DagligFast(
+            new DateTime(2023, 01, 01), new DateTime(2024, 01, 01),
+            new Laegemiddel("Acetylsalicylsyre", 0.1, 0.15, 0.16, "Styk"),
+            2, 3, 4, 1);
+
+        double doegnDosisTC2 = TC2.doegnDosis();
+
+        Assert.AreEqual(10, doegnDosisTC2);
+
+        testLogger.LogInformation("TC2 Doegndosis resultat: " + doegnDosisTC2);
+        testLogger.LogInformation("Test finished at: " + DateTime.Now);
+
     }
 
-    
-   
 
-   
+    //Test med ugyldige værdier der burde fejle 
+    [TestMethod]
+    public void DoegnDosisTestFejler()
+    {
+       
+        //Test med negativ værdi, TC3
+        DagligFast TC3 = new DagligFast(
+            new DateTime(2023, 01, 01), new DateTime(2023, 12, 07),
+            new Laegemiddel("Acetylsalicylsyre", 0.1, 0.15, 0.16, "Styk"),
+            -1, 1, 1, 1);
+
+        double doegnDosisTC3 = TC3.doegnDosis();
+
+        Assert.AreEqual(1, doegnDosisTC3);
+
+
+        //Test med 0 input, TC4 
+        DagligFast TC4 = new DagligFast(
+            new DateTime(2023, 01, 01), new DateTime(2024, 01, 01),
+            new Laegemiddel("Acetylsalicylsyre", 0.1, 0.15, 0.16, "Styk"),
+            0,0,0,0);
+
+        double doegnDosisTC4 = TC4.doegnDosis();
+
+        Assert.AreEqual(1, doegnDosisTC4);
+
+
+
+    }
+
+
 }

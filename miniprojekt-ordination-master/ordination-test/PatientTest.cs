@@ -3,7 +3,7 @@ namespace ordination_test;
 using shared.Model;
 
 [TestClass]
-public class PatientTest
+public class PatientTest : TestBase
 {
 
     [TestMethod]

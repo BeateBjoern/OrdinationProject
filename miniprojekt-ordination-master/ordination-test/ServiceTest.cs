@@ -9,23 +9,23 @@ using Microsoft.Extensions.Logging;
 using shared;
 
 [TestClass]
-public class ServiceTest
+public class ServiceTest : TestBase
 {
-    private DataService service;
-    private ILogger<DataService> testLogger; //Bruger test-specifik logger 
+    //private DataService service;
+    //private ILogger<DataService> testLogger; //Bruger test-specifik logger 
 
-    [TestInitialize]
-    public void SetupBeforeEachTest()
-    {
-        TestStartup.ConfigureLogging();  //anvender logger konfigurationer defineret i startupclass
-        testLogger = new LoggerFactory().AddSerilog().CreateLogger<DataService>();//opretter et nyt instance af logger 
+    //[TestInitialize]
+    //public void SetupBeforeEachTest()
+    //{
+    //    TestStartup.ConfigureLogging();  //anvender logger konfigurationer defineret i startupclass
+    //    testLogger = new LoggerFactory().AddSerilog().CreateLogger<DataService>();//opretter et nyt instance af logger 
 
-        var optionsBuilder = new DbContextOptionsBuilder<OrdinationContext>();
-        optionsBuilder.UseInMemoryDatabase(databaseName: "test-database");
-        var context = new OrdinationContext(optionsBuilder.Options);
-        service = new DataService(context, testLogger);
-        service.SeedData();
-    }
+    //    var optionsBuilder = new DbContextOptionsBuilder<OrdinationContext>();
+    //    optionsBuilder.UseInMemoryDatabase(databaseName: "test-database");
+    //    var context = new OrdinationContext(optionsBuilder.Options);
+    //    service = new DataService(context, testLogger);
+    //    service.SeedData();
+    //}
 
 
 
@@ -57,6 +57,7 @@ public class ServiceTest
         testLogger.LogInformation("Antal dagligfaste ordinationer:" + service.GetDagligFaste().Count());
         var addedDagligFast = service.GetDagligFaste().Last(); 
 
+        //sammenligner forventet resultat med faktisk resultat 
         Assert.IsNotNull(addedDagligFast, "The added DagligFast should not be null");
         Assert.AreEqual(lm1.LaegemiddelId, addedDagligFast.laegemiddel.LaegemiddelId, "LaegemiddelId burde matche");
 
@@ -135,13 +136,13 @@ public class ServiceTest
         testLogger.LogInformation($"Test started at: {DateTime.Now}");
 
         // Opretter nye patienter med vægt værdier vi skal anvende i testen
-        var p1 = new Patient { PatientId = 10, vaegt = 20 };  //TC3
-        var p2 = new Patient { PatientId = 11, vaegt = 24.9 }; //TC4
-        var p3 = new Patient { PatientId = 12, vaegt = 25 }; //TC5 (grænseværdi)
-        var p4 = new Patient { PatientId = 13, vaegt = 65 }; //TC6 
-        var p5 = new Patient { PatientId = 14, vaegt = 119.9 }; // TC7
-        var p6 = new Patient { PatientId = 15, vaegt = 120 }; //TC8 (grænseværdi)
-        var p7 = new Patient { PatientId = 16, vaegt = 126 }; //TC9 
+        var p1 = new Patient { PatientId = 10, vaegt = 20 };  //TC1
+        var p2 = new Patient { PatientId = 11, vaegt = 24.9 }; //TC2
+        var p3 = new Patient { PatientId = 12, vaegt = 25 }; //TC3 (grænseværdi)
+        var p4 = new Patient { PatientId = 13, vaegt = 65 }; //TC4 
+        var p5 = new Patient { PatientId = 14, vaegt = 119.9 }; // TC5
+        var p6 = new Patient { PatientId = 15, vaegt = 120 }; //TC6 (grænseværdi)
+        var p7 = new Patient { PatientId = 16, vaegt = 126 }; //TC7 
 
 
         var lmList = service.GetLaegemidler();
@@ -180,20 +181,23 @@ public class ServiceTest
     }
 
 
-
+    //Metode med ugyldig værdi (negativt tal) 
     [TestMethod]
     public void GetAnbefaletDosisPerDøgnTestFejler()
     {
-        var p1 = new Patient { PatientId = 25, vaegt = -20 };  //TC1
+        var p1 = new Patient { PatientId = 25, vaegt = -20 };  //TC
+        var p2 = new Patient { PatientId = 25, vaegt = 0 };
 
         var lmList = service.GetLaegemidler();
         var acetyl = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 1);
 
         service.AddPatient(p1);
 
-        double TC1 = service.GetAnbefaletDosisPerDøgn(p1.PatientId, acetyl.LaegemiddelId);
+        double result1 = service.GetAnbefaletDosisPerDøgn(p1.PatientId, acetyl.LaegemiddelId);
+        double result2 = service.GetAnbefaletDosisPerDøgn(p2.PatientId, acetyl.LaegemiddelId);
 
-        Assert.AreEqual(2, TC1);
+        Assert.AreEqual(2, result1);
+        Assert.AreEqual(0, result2); // Usikker på hvordan vi laver denne? 
 
     }
 
