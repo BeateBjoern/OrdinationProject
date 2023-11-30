@@ -95,12 +95,26 @@ public class ApiService
     public async Task<DagligSkæv> OpretDagligSkaev(int patientId, int laegemiddelId,
         Dosis[] doser, DateTime startDato, DateTime slutDato) {
 
-        string url = $"{baseAPI}ordinationer/dagligskaev/";
-        DagligSkaevDTO opret = new(patientId, laegemiddelId, doser, startDato, slutDato);
-        HttpResponseMessage res = await http.PostAsJsonAsync<DagligSkaevDTO>(url, opret);
-        string json = res.Content.ReadAsStringAsync().Result;
-        DagligSkæv newDagligSkaev = JsonSerializer.Deserialize<DagligSkæv>(json)!;
-        return newDagligSkaev;
+             //Laegemiddel[] lms = await GetLaegemidler();
+             //Laegemiddel lm = lms.FirstOrDefault(lm => lm.LaegemiddelId == laegemiddelId);
+             
+             //AnbefaletDosisDTO _anbefaletDosis = await  GetAnbefaletDosisPerDøgn(patientId,lm);
+             //double dosisTotal = doser.Sum(sum => sum.antal);
+
+        //if (dosisTotal < _anbefaletDosis.anbefaletDosis)
+        //{
+            string url = $"{baseAPI}ordinationer/dagligskaev/";
+            DagligSkaevDTO opret = new(patientId, laegemiddelId, doser, startDato, slutDato);
+            HttpResponseMessage res = await http.PostAsJsonAsync<DagligSkaevDTO>(url, opret);
+            string json = res.Content.ReadAsStringAsync().Result;
+            DagligSkæv newDagligSkaev = JsonSerializer.Deserialize<DagligSkæv>(json)!;
+            return newDagligSkaev;
+        //}
+        //else return null;
+            
+           
+        
+  
     }
 
     public async Task<string> GivDosisPN(PN pn, DateTime date)

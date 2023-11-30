@@ -206,6 +206,9 @@ public class DataService
 
             Patient patient = db.Patienter.FirstOrDefault(a => a.PatientId == patientId);
             Laegemiddel laegemiddel = db.Laegemiddler.FirstOrDefault(b => b.LaegemiddelId == laegemiddelId);
+            double anbefaletDosis = GetAnbefaletDosisPerDøgn(patientId, laegemiddelId);
+            double dosisTotal = doser.Sum(sum => sum.antal);
+            
 
             if (patient == null || laegemiddel == null || doser == null || startDato == null || slutDato == null || startDato>slutDato)
             {
@@ -213,20 +216,25 @@ public class DataService
 
             }
 
-            else 
+            else if(dosisTotal!= 0 && dosisTotal < anbefaletDosis)
             {
                 var nyDagligSkæv = new DagligSkæv(startDato, slutDato, laegemiddel);
+
                 foreach (var dosis in doser)
                 {
                     nyDagligSkæv.opretDosis(dosis.tid, dosis.antal);
                 }
 
-                   patient.ordinationer.Add(nyDagligSkæv);
-                   db.SaveChanges();
-                   return nyDagligSkæv;
+                patient.ordinationer.Add(nyDagligSkæv);
+                db.SaveChanges();
+                return nyDagligSkæv;
             }
 
+        return null;
+            
         }
+       
+    
 
 
     //Metode vi har lavet 

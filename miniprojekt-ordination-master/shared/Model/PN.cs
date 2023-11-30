@@ -16,10 +16,16 @@ public class PN : Ordination {
 
 
     //Metode vi har lavet 
-    public bool givDosis(Dato givesDen) {
+    public bool givDosis(Dato givesDen)
+    {
 
+        if (givesDen != null && givesDen.dato >= startDen && givesDen.dato <= slutDen)
+        {
             dates.Add(givesDen);
-            return true;       
+            return true;
+        }
+
+        return false;
     }
 
     //Metode vi har lavet 

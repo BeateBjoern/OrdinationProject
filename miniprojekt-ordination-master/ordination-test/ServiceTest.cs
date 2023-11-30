@@ -7,6 +7,7 @@ using Data;
 using shared.Model;
 using Microsoft.Extensions.Logging;
 using shared;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 [TestClass]
 public class ServiceTest : TestBase
@@ -46,18 +47,24 @@ public class ServiceTest : TestBase
         Patient patient1 = service.GetPatienter().First();
         Laegemiddel lm1 = service.GetLaegemidler().First(); 
 
+        //TC1, test
+        testLogger.LogInformation("Antal ordinatoer før oprettelse:" + service.GetDagligFaste().Count());
 
-        testLogger.LogInformation("Antal dagligfaste ordinationer:" + service.GetDagligFaste().Count());
-        Assert.AreEqual(1, service.GetDagligFaste().Count());  
-
+        //Tjekker antal før oprettelse 
+        int initialCount = service.GetDagligFaste().Count(); 
+        
         service.OpretDagligFast(patient1.PatientId, lm1.LaegemiddelId,2, 2, 1, 0, DateTime.Now, DateTime.Now.AddDays(3));
 
-        // Sammenligner forventet resultat med faktisk resultat og logger 
-        Assert.AreEqual(2, service.GetDagligFaste().Count());
-        testLogger.LogInformation("Antal dagligfaste ordinationer:" + service.GetDagligFaste().Count());
+        //Sammenligner efter 
+        Assert.AreEqual(initialCount + 1 , service.GetDagligFaste().Count());
+
+
+        testLogger.LogInformation("Antal ordinationer efter oprettelse:" + service.GetDagligFaste().Count());
+
+        //Henter nyopretted ordination
         var addedDagligFast = service.GetDagligFaste().Last(); 
 
-        //sammenligner forventet resultat med faktisk resultat 
+        //Tjekker for nul, samt om lægemiddel matcher 
         Assert.IsNotNull(addedDagligFast, "The added DagligFast should not be null");
         Assert.AreEqual(lm1.LaegemiddelId, addedDagligFast.laegemiddel.LaegemiddelId, "LaegemiddelId burde matche");
 
@@ -75,10 +82,12 @@ public class ServiceTest : TestBase
         Patient patient = service.GetPatienter().First();
         Laegemiddel lm = service.GetLaegemidler().First();
 
+        //Antal ordinationer før oprettelse 
         int initialCount = service.GetPNs().Count();
 
         service.OpretPN(patient.PatientId, lm.LaegemiddelId, 6, DateTime.Now, DateTime.Now.AddDays(3));
 
+        //Antal ordinationer efter 
         int updatedCount = service.GetPNs().Count();
 
 
