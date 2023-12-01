@@ -12,24 +12,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 [TestClass]
 public class ServiceTest : TestBase
 {
-    //private DataService service;
-    //private ILogger<DataService> testLogger; //Bruger test-specifik logger 
-
-    //[TestInitialize]
-    //public void SetupBeforeEachTest()
-    //{
-    //    TestStartup.ConfigureLogging();  //anvender logger konfigurationer defineret i startupclass
-    //    testLogger = new LoggerFactory().AddSerilog().CreateLogger<DataService>();//opretter et nyt instance af logger 
-
-    //    var optionsBuilder = new DbContextOptionsBuilder<OrdinationContext>();
-    //    optionsBuilder.UseInMemoryDatabase(databaseName: "test-database");
-    //    var context = new OrdinationContext(optionsBuilder.Options);
-    //    service = new DataService(context, testLogger);
-    //    service.SeedData();
-    //}
-
-
-
 
     [TestMethod]
     public void PatientsExist()
@@ -38,10 +20,10 @@ public class ServiceTest : TestBase
     }
 
 
+    //Test med gyldige værdier (har test tabel)
     [TestMethod]
     public void OpretDagligFast()
     {
-        testLogger.LogInformation("Calling OpretDagligFastTest method...");
         testLogger.LogInformation($"Test started at: {DateTime.Now}");
 
         Patient patient1 = service.GetPatienter().First();
@@ -72,11 +54,10 @@ public class ServiceTest : TestBase
 
     }
 
-
+    //Test med gyldige værdier og valid input 
     [TestMethod]
     public void OpretPNTest()
     {
-        testLogger.LogInformation("Calling OpretPNTest method...");
         testLogger.LogInformation($"Test started at: {DateTime.Now}");
 
         Patient patient = service.GetPatienter().First();
@@ -101,15 +82,16 @@ public class ServiceTest : TestBase
 
     }
 
-
+    //Test med gyldige værdier og valid input 
     [TestMethod]
     public void OpretDagligSkaevTest()
     {
-        testLogger.LogInformation("Calling OpretDagligSkævTest method...");
+
         testLogger.LogInformation($"Test started at: {DateTime.Now}");
 
         Patient patient = service.GetPatienter().First();
         Laegemiddel lm = service.GetLaegemidler().First();
+
         testLogger.LogInformation("Patient og lægemiddel: " + patient.PatientId + ", " +  lm.LaegemiddelId);
 
         Assert.AreEqual(1, service.GetDagligSkæve().Count());
@@ -125,9 +107,11 @@ public class ServiceTest : TestBase
 
             }, new DateTime(2023, 01, 01), new DateTime(2023, 01, 08));
 
-        // Sammenligner forventet resultat med faktisk resultat 
+
         var addedDagligSkæv = service.GetDagligSkæve().Last(); 
+
         testLogger.LogInformation("Antal ordinationer efter oprettelse:" + service.GetDagligSkæve().Count());
+
         Assert.AreEqual(2, service.GetDagligSkæve().Count());
         Assert.IsNotNull(addedDagligSkæv, "The added DagligFast should not be null");
         Assert.AreEqual(lm.LaegemiddelId, addedDagligSkæv.laegemiddel.LaegemiddelId, "LaegemiddelId burde matche");

@@ -13,6 +13,7 @@ public class DagligFastTest : TestBase
     {
 
         testLogger.LogInformation("Test started at: " + DateTime.Now);
+
         //TC1 Test med 1 styk(tæt på grænseværdi = 0 ) 
         DagligFast TC1 = new DagligFast(
             new DateTime(2023, 01, 01), new DateTime(2023, 12, 07),
@@ -41,12 +42,12 @@ public class DagligFastTest : TestBase
     }
 
 
-    //Test med ugyldige værdier der burde fejle 
+    //Test med ugyldige værdier, test der burde fejle 
     [TestMethod]
     public void DoegnDosisTestFejler()
     {
        
-        //TC3 Test med negativ værdi
+        //TC3 Test med negativ værdi som input på dosis
         DagligFast TC3 = new DagligFast(
             new DateTime(2023, 01, 01), new DateTime(2023, 12, 07),
             new Laegemiddel("Acetylsalicylsyre", 0.1, 0.15, 0.16, "Styk"),
@@ -57,7 +58,7 @@ public class DagligFastTest : TestBase
         Assert.AreEqual(1, doegnDosisTC3);
 
 
-        //TC4 Test med 0 input
+        //TC4 Test med 0 som  input på alle dosis
         DagligFast TC4 = new DagligFast(
             new DateTime(2023, 01, 01), new DateTime(2024, 01, 01),
             new Laegemiddel("Acetylsalicylsyre", 0.1, 0.15, 0.16, "Styk"),
