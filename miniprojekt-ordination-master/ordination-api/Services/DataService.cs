@@ -4,15 +4,18 @@ using System.Text.Json;
 using shared.Model;
 using static shared.Util;
 using Data;
+using Serilog;
 
 namespace Service;
 
 public class DataService
 {
     private OrdinationContext db { get; }
+    private readonly ILogger<DataService> logger;
 
-    public DataService(OrdinationContext db) {
+    public DataService(OrdinationContext db, ILogger<DataService> logger) {
         this.db = db;
+        this.logger = logger;
     }
 
     /// <summary>
@@ -144,110 +147,121 @@ public class DataService
         return db.Laegemiddler.ToList();
     }
 
-  //All methods below are made by us 
+
+
+  //Metode vi har lavet
     public PN OpretPN(int patientId, int laegemiddelId, double antal, DateTime startDato, DateTime slutDato)
     {
 
          var laegeMiddel = GetLaegemidler().FirstOrDefault(m => m.LaegemiddelId == laegemiddelId);
          var patient = GetPatienter().FirstOrDefault(p => p.PatientId == patientId);
 
-        if (laegeMiddel != null && patientId != null)
-        {
-            try
+            if (laegeMiddel == null && patientId == null && antal >= 0 && startDato > slutDato)
             {
-                Console.WriteLine("Test OpretPn DataService: " + patientId); 
+
+                throw new ArgumentNullException("Felter mangler eller ugyldig dato input. Startdato skal ligge før slutdato");
+
+            }
+            else
+            {
+
+                Console.WriteLine("Test OpretPn DataService: " + patientId);
                 PN nyPn = new PN(startDato, slutDato, antal, laegeMiddel);
                 patient.ordinationer.Add(nyPn);
                 db.SaveChanges();
-                return nyPn; 
+                return nyPn;
             }
-            catch(NullReferenceException ex)
-            {
-                Console.WriteLine("Something went wrong " + ex.Message);
-                return null; 
-            }
-           
-        }  
-        return null!;
+            return null!;
     }
 
 
+    //Metode vi har lavet
     public DagligFast OpretDagligFast(int patientId, int laegemiddelId, double antalMorgen, double antalMiddag, double antalAften, double antalNat, DateTime startDato, DateTime slutDato)
     {
-       
+            
+
             Patient patient = db.Patienter.FirstOrDefault(a => a.PatientId == patientId);
             Laegemiddel laegemiddel = db.Laegemiddler.FirstOrDefault(b => b.LaegemiddelId == laegemiddelId);
 
-            if (patient == null || laegemiddel == null || antalMorgen == null || antalMiddag == null || antalAften == null || antalNat == null || startDato == null || slutDato == null)
+            if (patient == null || laegemiddel == null || antalMorgen == null || antalMiddag == null || antalAften == null || antalNat == null || startDato == null || slutDato == null || startDato > slutDato)
             {
                  throw new ArgumentNullException("Felter mangler eller ugyldig dato input. Startdato skal ligge før slutdato");
                  
             }
-
-             if (slutDato > startDato)
+            else
             {
                 var nyDagligFast = new DagligFast(startDato, slutDato, laegemiddel, antalMorgen, antalMiddag, antalAften, antalNat);
                 patient.ordinationer.Add(nyDagligFast);
                 Console.WriteLine(nyDagligFast.MorgenDosis);
                 db.SaveChanges();
                 return nyDagligFast;
-            }
-
-        return null;
+             }         
+       
     }
 
 
+    //Metode vi har lavet 
     public DagligSkæv OpretDagligSkaev(int patientId, int laegemiddelId, Dosis[] doser, DateTime startDato, DateTime slutDato)
     {
 
             Patient patient = db.Patienter.FirstOrDefault(a => a.PatientId == patientId);
             Laegemiddel laegemiddel = db.Laegemiddler.FirstOrDefault(b => b.LaegemiddelId == laegemiddelId);
+            double anbefaletDosis = GetAnbefaletDosisPerDøgn(patientId, laegemiddelId);
+            double dosisTotal = doser.Sum(sum => sum.antal);
+            
 
-            if (patient == null || laegemiddel == null || doser == null || startDato == null || slutDato == null)
+            if (patient == null || laegemiddel == null || doser == null || startDato == null || slutDato == null || startDato>slutDato)
             {
                 throw new ArgumentNullException("Felter mangler eller ugyldig dato input. Startdato skal ligge før slutdato");
 
             }
 
-        if (startDato < slutDato)
+            else if(dosisTotal!= 0 && dosisTotal < anbefaletDosis)
             {
                 var nyDagligSkæv = new DagligSkæv(startDato, slutDato, laegemiddel);
+
                 foreach (var dosis in doser)
                 {
                     nyDagligSkæv.opretDosis(dosis.tid, dosis.antal);
                 }
 
-                   patient.ordinationer.Add(nyDagligSkæv);
-                   db.SaveChanges();
-                   return nyDagligSkæv;
+                patient.ordinationer.Add(nyDagligSkæv);
+                db.SaveChanges();
+                return nyDagligSkæv;
             }
 
-            return null;
+        return null;
+            
         }
+       
+    
 
 
+    //Metode vi har lavet 
     public string AnvendOrdination(int id, Dato dato)
     {
         PN pn = db.PNs.FirstOrDefault(pn => pn.OrdinationId == id);
 
-        if (id != null && dato.dato >= pn.startDen && dato.dato <= pn.slutDen) //Tjekker for gyldig dato input 
+        Console.WriteLine("dato fra anvendordination: " + dato);
+
+        if (pn == null || dato.dato < DateTime.Now.Date|| dato.dato <= pn.startDen || dato.dato >= pn.slutDen ) //Tjekker for gyldig dato input 
         {
-            pn.givDosis(dato); //ændret til at anvende PN klassens giv dosis ,fremfor at undlade den 
+            return "Medicin kan ikke gives udenfor ordinationsperiode, eller med tilbagevirkende kraft";
+
+        }
+        else
+        {
+
+            pn.givDosis(dato);
             db.SaveChanges();
             return "PN anvendt!";
         }
-        return "Anvendelse ikke muligt udenfor ordinationsperiode";
+     
     }
 
 
 
-    /// <summary>
-    /// Den anbefalede dosis for den pågældende patient, per døgn, hvor der skal tages hensyn til
-	/// patientens vægt. Enheden afhænger af lægemidlet. Patient og lægemiddel må ikke være null.
-    /// </summary>
-    /// <param name="patient"></param>
-    /// <param name="laegemiddel"></param>
-    /// <returns></returns>
+    //Metode vi har lavet 
 	public double GetAnbefaletDosisPerDøgn(int patientId, int laegemiddelId)
     {
 
@@ -260,7 +274,7 @@ public class DataService
             throw new ArgumentNullException("Patient og lægemiddel må ikke være null");
         }
 
-        if (patient.vaegt < 25)
+        else if (patient.vaegt < 25)
         {
             dosis = patient.vaegt * laegemiddel.enhedPrKgPrDoegnLet;
         }
@@ -273,6 +287,7 @@ public class DataService
             dosis = patient.vaegt * laegemiddel.enhedPrKgPrDoegnTung;
         }
 
+        //logger.LogInformation("GetANbefaletDosisPerDøgn færdig");
         return dosis;
     }
 

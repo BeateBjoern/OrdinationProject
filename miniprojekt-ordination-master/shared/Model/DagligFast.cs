@@ -24,11 +24,17 @@ public class DagligFast : Ordination {
 		return base.antalDage() * doegnDosis();
 	}
 
-    public override double doegnDosis()
-    {
-        double dDosis = MorgenDosis.antal + MiddagDosis.antal + AftenDosis.antal + NatDosis.antal;
-        return dDosis;
-    }
+  public override double doegnDosis() {
+
+		double sum = -1; //Sat til -1, så metoden returnerer -1 i tilfælde af fail 
+
+		if(MorgenDosis.antal >= 0 && MiddagDosis.antal >= 0 && AftenDosis.antal >= 0 && NatDosis.antal >= 0)
+        {
+            sum = MorgenDosis.antal + MiddagDosis.antal + AftenDosis.antal + NatDosis.antal;
+        }
+		
+        return sum;
+	}
 
     public Dosis[] getDoser() {
 		Dosis[] doser = {MorgenDosis, MiddagDosis, AftenDosis, NatDosis};

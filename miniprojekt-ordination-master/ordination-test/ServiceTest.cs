@@ -1,25 +1,17 @@
 namespace ordination_test;
 
 using Microsoft.EntityFrameworkCore;
-
+using Serilog;
 using Service;
 using Data;
 using shared.Model;
+using Microsoft.Extensions.Logging;
+using shared;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 [TestClass]
-public class ServiceTest
+public class ServiceTest : TestBase
 {
-    private DataService service;
-
-    [TestInitialize]
-    public void SetupBeforeEachTest()
-    {
-        var optionsBuilder = new DbContextOptionsBuilder<OrdinationContext>();
-        optionsBuilder.UseInMemoryDatabase(databaseName: "test-database");
-        var context = new OrdinationContext(optionsBuilder.Options);
-        service = new DataService(context);
-        service.SeedData();
-    }
 
     [TestMethod]
     public void PatientsExist()
@@ -28,68 +20,104 @@ public class ServiceTest
     }
 
 
+    //Test med gyldige værdier (har test tabel)
     [TestMethod]
     public void OpretDagligFast()
     {
-        Patient patient = service.GetPatienter().First();
-        Laegemiddel lm = service.GetLaegemidler().First();
+        testLogger.LogInformation($"Test started at: {DateTime.Now}");
 
-        Assert.AreEqual(1, service.GetDagligFaste().Count());
+        Patient patient1 = service.GetPatienter().First();
+        Laegemiddel lm1 = service.GetLaegemidler().First(); 
 
-        service.OpretDagligFast(patient.PatientId, lm.LaegemiddelId,
-            2, 2, 1, 0, DateTime.Now, DateTime.Now.AddDays(3));
+        //TC1, test
+        testLogger.LogInformation("Antal ordinatoer før oprettelse:" + service.GetDagligFaste().Count());
 
-        Assert.AreEqual(2, service.GetDagligFaste().Count());
+        //Tjekker antal før oprettelse 
+        int initialCount = service.GetDagligFaste().Count(); 
+        
+        service.OpretDagligFast(patient1.PatientId, lm1.LaegemiddelId,2, 2, 1, 0, DateTime.Now, DateTime.Now.AddDays(3));
 
-        var addedDagligFast = service.GetDagligFaste().Last(); // Finder sidste tilføjede ordination for at eftertjekke data
+        //Sammenligner efter 
+        Assert.AreEqual(initialCount + 1 , service.GetDagligFaste().Count());
 
+
+        testLogger.LogInformation("Antal ordinationer efter oprettelse:" + service.GetDagligFaste().Count());
+
+        //Henter nyopretted ordination
+        var addedDagligFast = service.GetDagligFaste().Last(); 
+
+        //Tjekker for nul, samt om lægemiddel matcher 
         Assert.IsNotNull(addedDagligFast, "The added DagligFast should not be null");
-        Assert.AreEqual(lm.LaegemiddelId, addedDagligFast.laegemiddel.LaegemiddelId, "LaegemiddelId burde matche");
-        //Kunne med fordel have tjekket på patientId, men patientId er ikke tilgængelig parameter på ordination eller dagligfast
+        Assert.AreEqual(lm1.LaegemiddelId, addedDagligFast.laegemiddel.LaegemiddelId, "LaegemiddelId burde matche");
+
+        testLogger.LogInformation($"Test finished at: {DateTime.Now}");
 
     }
 
-
+    //Test med gyldige værdier og valid input 
     [TestMethod]
     public void OpretPNTest()
     {
+        testLogger.LogInformation($"Test started at: {DateTime.Now}");
+
         Patient patient = service.GetPatienter().First();
         Laegemiddel lm = service.GetLaegemidler().First();
 
+        //Antal ordinationer før oprettelse 
         int initialCount = service.GetPNs().Count();
 
         service.OpretPN(patient.PatientId, lm.LaegemiddelId, 6, DateTime.Now, DateTime.Now.AddDays(3));
 
+        //Antal ordinationer efter 
         int updatedCount = service.GetPNs().Count();
+
+
+        // Sammenligner forventet resultat med faktisk resultat 
         Assert.AreEqual(initialCount + 1, updatedCount);
-
-        var addedPN = service.GetPNs().Last(); //Finder sidste tilføjede pn ordination for at eftertjekke data 
-
+        var addedPN = service.GetPNs().Last(); 
         Assert.IsNotNull(addedPN, "Tilføjet PN burde ikke være nul");
         Assert.AreEqual(lm.LaegemiddelId, addedPN.laegemiddel.LaegemiddelId, "LaegemiddelId burde matche");
-        //Kunne med fordel have tjekket på patientId, men patientId er ikke tilgængelig parameter på ordination eller dagligfast
+
+        testLogger.LogInformation($"Test finished at: {DateTime.Now}");
 
     }
 
-
+    //Test med gyldige værdier og valid input 
     [TestMethod]
     public void OpretDagligSkaevTest()
     {
 
+        testLogger.LogInformation($"Test started at: {DateTime.Now}");
+
         Patient patient = service.GetPatienter().First();
         Laegemiddel lm = service.GetLaegemidler().First();
 
+        testLogger.LogInformation("Patient og lægemiddel: " + patient.PatientId + ", " +  lm.LaegemiddelId);
+
         Assert.AreEqual(1, service.GetDagligSkæve().Count());
+        testLogger.LogInformation("Antal ordinationer før oprettelse:" + service.GetDagligSkæve().Count());
 
-        service.OpretDagligFast(patient.PatientId, lm.LaegemiddelId, 2, 2, 1, 0, DateTime.Now, DateTime.Now.AddDays(3));
+        //Ppretter en ny dagligSkæv med 7 dages periode 
+        service.OpretDagligSkaev(patient.PatientId, lm.LaegemiddelId,
+            new Dosis[]  {
+                new Dosis(Util.CreateTimeOnly(12, 0, 0), 0.5),
+                new Dosis(Util.CreateTimeOnly(12, 40, 0), 1),
+                new Dosis(Util.CreateTimeOnly(16, 0, 0), 2.5),
+                new Dosis(Util.CreateTimeOnly(18, 45, 0), 3)
 
-        Assert.AreEqual(2, service.GetDagligFaste().Count());
+            }, new DateTime(2023, 01, 01), new DateTime(2023, 01, 08));
 
-        var addedDagligSkæv = service.GetDagligSkæve().Last(); // Finder sidste tilføjede ordination for at eftertjekke data
 
+        var addedDagligSkæv = service.GetDagligSkæve().Last(); 
+
+        testLogger.LogInformation("Antal ordinationer efter oprettelse:" + service.GetDagligSkæve().Count());
+
+        Assert.AreEqual(2, service.GetDagligSkæve().Count());
         Assert.IsNotNull(addedDagligSkæv, "The added DagligFast should not be null");
         Assert.AreEqual(lm.LaegemiddelId, addedDagligSkæv.laegemiddel.LaegemiddelId, "LaegemiddelId burde matche");
-        //Kunne med fordel have tjekket på patientId, men patientId er ikke tilgængelig parameter på ordination eller dagligfast
+
+        testLogger.LogInformation($"Test finished at: {DateTime.Now}");
+
 
     }
 
@@ -97,14 +125,17 @@ public class ServiceTest
     [TestMethod]
     public void GetAnbefaletDosisPerDøgnTest()
     {
-        // Arrange
-        var p1 = new Patient { PatientId = 10, vaegt = 20 };  //TC3
-        var p2 = new Patient { PatientId = 11, vaegt = 24.9 }; //TC4
-        var p3 = new Patient { PatientId = 12, vaegt = 25 }; //TC5 (grænseværdi)
-        var p4 = new Patient { PatientId = 13, vaegt = 65 }; //TC6 
-        var p5 = new Patient { PatientId = 14, vaegt = 119.9 }; // TC7
-        var p6 = new Patient { PatientId = 15, vaegt = 120 }; //TC8 (grænseværdi)
-        var p7 = new Patient { PatientId = 16, vaegt = 126 }; //TC9 
+        testLogger.LogInformation("Calling GetAnbefaletDosisPerDøgnTest method...");
+        testLogger.LogInformation($"Test started at: {DateTime.Now}");
+
+        // Opretter nye patienter med vægt værdier vi skal anvende i testen
+        var p1 = new Patient { PatientId = 10, vaegt = 20 };  //TC1
+        var p2 = new Patient { PatientId = 11, vaegt = 24.9 }; //TC2
+        var p3 = new Patient { PatientId = 12, vaegt = 25 }; //TC3 (grænseværdi)
+        var p4 = new Patient { PatientId = 13, vaegt = 65 }; //TC4 
+        var p5 = new Patient { PatientId = 14, vaegt = 119.9 }; // TC5
+        var p6 = new Patient { PatientId = 15, vaegt = 120 }; //TC6 (grænseværdi)
+        var p7 = new Patient { PatientId = 16, vaegt = 126 }; //TC7 
 
 
         var lmList = service.GetLaegemidler();
@@ -114,6 +145,7 @@ public class ServiceTest
         var methot = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 4);
         var prednis = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 5);
 
+        //tilføjer nye patienter 
         service.AddPatient(p1);
         service.AddPatient(p2);
         service.AddPatient(p3); 
@@ -123,7 +155,7 @@ public class ServiceTest
         service.AddPatient(p7);
 
 
-        // Act
+        // Henter anbefalet dosis
         double TC3 = service.GetAnbefaletDosisPerDøgn(p1.PatientId, acetyl.LaegemiddelId);
         double TC4 = service.GetAnbefaletDosisPerDøgn(p2.PatientId, acetyl.LaegemiddelId);
         double TC5 = service.GetAnbefaletDosisPerDøgn(p3.PatientId, acetyl.LaegemiddelId);
@@ -132,12 +164,35 @@ public class ServiceTest
         double TC8 = service.GetAnbefaletDosisPerDøgn(p6.PatientId, acetyl.LaegemiddelId);
         double TC9 = service.GetAnbefaletDosisPerDøgn(p7.PatientId, acetyl.LaegemiddelId);
 
-        // Assert
+        // Sammenligner forventet resultat med faktisk resultat 
         Assert.AreEqual(2, TC3);
         Assert.AreEqual(2.49, TC4);
-        
+        //Assert.AreEqual()
+
+
+        testLogger.LogInformation($"Test finished at: {DateTime.Now}");
     }
 
+
+    //Metode med ugyldig værdi (negativt tal) 
+    [TestMethod]
+    public void GetAnbefaletDosisPerDøgnTestFejler()
+    {
+        var p1 = new Patient { PatientId = 25, vaegt = -20 };  //TC
+        var p2 = new Patient { PatientId = 25, vaegt = 0 };
+
+        var lmList = service.GetLaegemidler();
+        var acetyl = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 1);
+
+        service.AddPatient(p1);
+
+        double result1 = service.GetAnbefaletDosisPerDøgn(p1.PatientId, acetyl.LaegemiddelId);
+        double result2 = service.GetAnbefaletDosisPerDøgn(p2.PatientId, acetyl.LaegemiddelId);
+
+        Assert.AreEqual(2, result1);
+        Assert.AreEqual(0, result2); // Usikker på hvordan vi laver denne? 
+
+    }
 
 
 
@@ -149,7 +204,7 @@ public class ServiceTest
     //{
     //    Patient testPatient1 = null;
     //    int x = null!; 
-     
+
     //    var lmList = service.GetLaegemidler();
     //    var medicin = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 1);
 

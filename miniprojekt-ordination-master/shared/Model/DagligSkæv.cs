@@ -3,7 +3,7 @@ namespace shared.Model;
 public class DagligSkæv : Ordination {
     public List<Dosis> doser { get; set; } = new List<Dosis>();
 
-	public int patientId { get; set; } 
+	//public int patientId { get; set; } 
     public DagligSkæv(DateTime startDen, DateTime slutDen, Laegemiddel laegemiddel) : base(laegemiddel, startDen, slutDen) {
 	}
 
@@ -15,6 +15,7 @@ public class DagligSkæv : Ordination {
     }
 
 	public void opretDosis(DateTime tid, double antal) {
+
         doser.Add(new Dosis(tid, antal));
     }
 
@@ -24,7 +25,7 @@ public class DagligSkæv : Ordination {
 
     public override double doegnDosis()
     {
-        double sum = 0;
+        double sum = -1;
         for (int i = 0; i < doser.Count; i++)
         {
             sum += doser[i].antal;

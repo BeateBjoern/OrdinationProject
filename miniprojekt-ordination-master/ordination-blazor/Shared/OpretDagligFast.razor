@@ -71,7 +71,7 @@
         <div class="form-group row">
             <label for="antal-nat" class="col-sm-4 col-form-label">Antal nat</label>
             <div class="col-sm-8">
-               <p> @responseMessage</p>
+                <p style ="color:red"> @responseMessage</p>
             </div>
         </div>
 
@@ -121,7 +121,11 @@
             responseMessage = "Alle tidspunkter kan ikke være null";
             return;
         }
-        else
+        else if (antalMorgen < 0 || antalMiddag < 0 || antalAften < 0 || antalNat < 0)
+        {
+            responseMessage = "Antal kan ikke være negativt";
+            return;
+        }
         {
             Console.WriteLine("Opret");
             await apiService.OpretDagligFast(Patient.id, laegemiddel.LaegemiddelId, antalMorgen, antalMiddag, antalAften, antalNat, StartDato, SlutDato);
