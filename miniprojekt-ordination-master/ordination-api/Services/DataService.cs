@@ -175,8 +175,6 @@ public class DataService
     public DagligFast OpretDagligFast(int patientId, int laegemiddelId, double antalMorgen, double antalMiddag, double antalAften, double antalNat, DateTime startDato, DateTime slutDato)
     {
        
-         
-
             Patient patient = db.Patienter.FirstOrDefault(a => a.PatientId == patientId);
             Laegemiddel laegemiddel = db.Laegemiddler.FirstOrDefault(b => b.LaegemiddelId == laegemiddelId);
 
