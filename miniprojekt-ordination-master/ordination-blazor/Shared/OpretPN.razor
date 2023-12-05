@@ -82,7 +82,7 @@
     private DateTime SlutDato { get; set; } = DateTime.Now.AddDays(3);
     private string responseMessage = "";
 
-    private async void Opret() {
+    private async Task Opret() {
         if (Patient == null || laegemiddel == null)
         {
             responseMessage = "Patient og laegemiddel skal vælges";
@@ -98,11 +98,25 @@
         }
         else
         {
-            Console.WriteLine("Opret");
-            PN pn = await apiService.OpretPN(Patient.id, laegemiddel.LaegemiddelId, antalEnheder, StartDato, SlutDato);
-            Console.WriteLine("Oprettet!");
-            Console.WriteLine(pn);
-            onDone?.Invoke($"Oprettet PN ordination for {Patient.navn}!");
+
+
+            AnbefaletDosisDTO _anbefaletDosis = await apiService.GetAnbefaletDosisPerDøgn(Patient.id, laegemiddel);
+
+            if (antalEnheder < _anbefaletDosis.anbefaletDosis)
+            {
+                Console.WriteLine("Opret");
+                PN pnResult = await apiService.OpretPN(Patient.id, laegemiddel.LaegemiddelId, antalEnheder, StartDato, SlutDato);
+                Console.WriteLine("Oprettet!");
+                Console.WriteLine(pnResult);
+                onDone?.Invoke($"Oprettet PN ordination for {Patient.navn}!");
+            }
+            else
+            {
+                responseMessage = "Valgte dosis overskrider anbefalet døgndosis";
+            }
+            
+
+          
         };
        
 

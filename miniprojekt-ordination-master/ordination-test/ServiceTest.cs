@@ -126,7 +126,7 @@ public class ServiceTest : TestBase
     public void GetAnbefaletDosisPerDøgnTest()
     {
         testLogger.LogInformation($"Test started at: {DateTime.Now}");
-
+        //TC1-TC7
         // Opretter nye patienter med vægt værdier vi skal anvende i testen
         var p1 = new Patient { PatientId = 10, vaegt = 20 };  //TC1
         var p2 = new Patient { PatientId = 11, vaegt = 24.9 }; //TC2
@@ -205,7 +205,7 @@ public class ServiceTest : TestBase
         double TC9 = service.GetAnbefaletDosisPerDøgn(p2.PatientId, acetyl.LaegemiddelId);
 
         Assert.AreEqual(2, TC8);
-        Assert.AreEqual(0, TC9); // Usikker på hvordan vi laver denne? 
+        Assert.AreEqual(0, TC9); 
 
     }
 
