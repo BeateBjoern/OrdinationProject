@@ -125,7 +125,6 @@ public class ServiceTest : TestBase
     [TestMethod]
     public void GetAnbefaletDosisPerDøgnTest()
     {
-        testLogger.LogInformation("Calling GetAnbefaletDosisPerDøgnTest method...");
         testLogger.LogInformation($"Test started at: {DateTime.Now}");
 
         // Opretter nye patienter med vægt værdier vi skal anvende i testen
@@ -133,19 +132,19 @@ public class ServiceTest : TestBase
         var p2 = new Patient { PatientId = 11, vaegt = 24.9 }; //TC2
         var p3 = new Patient { PatientId = 12, vaegt = 25 }; //TC3 (grænseværdi)
         var p4 = new Patient { PatientId = 13, vaegt = 65 }; //TC4 
-        var p5 = new Patient { PatientId = 14, vaegt = 119.9 }; // TC5
-        var p6 = new Patient { PatientId = 15, vaegt = 120 }; //TC6 (grænseværdi)
+        var p5 = new Patient { PatientId = 14, vaegt = 120 }; // TC5 (grænseværdi)
+        var p6 = new Patient { PatientId = 15, vaegt = 120.1 }; //TC6 
         var p7 = new Patient { PatientId = 16, vaegt = 126 }; //TC7 
 
 
         var lmList = service.GetLaegemidler();
         var acetyl = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 1);
-        var paracet = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 2);
-        var fucidin = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 3);
-        var methot = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 4);
-        var prednis = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 5);
+        //var paracet = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 2);
+        //var fucidin = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 3);
+        //var methot = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 4);
+        //var prednis = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 5);
 
-        //tilføjer nye patienter 
+        //tilføjer nye patienter med relevant vægt
         service.AddPatient(p1);
         service.AddPatient(p2);
         service.AddPatient(p3); 
@@ -155,19 +154,34 @@ public class ServiceTest : TestBase
         service.AddPatient(p7);
 
 
+        var p6vaegt = service.GetPatienter().FirstOrDefault(p => p.PatientId == 15);
+        testLogger.LogInformation($"Patient6 vægt: {p6vaegt.vaegt.ToString()}");
+        testLogger.LogInformation($"Præparat og  enhedsfaktor:{acetyl.navn}, {acetyl.enhedPrKgPrDoegnTung}");
+       
+
+
         // Henter anbefalet dosis
-        double TC3 = service.GetAnbefaletDosisPerDøgn(p1.PatientId, acetyl.LaegemiddelId);
-        double TC4 = service.GetAnbefaletDosisPerDøgn(p2.PatientId, acetyl.LaegemiddelId);
-        double TC5 = service.GetAnbefaletDosisPerDøgn(p3.PatientId, acetyl.LaegemiddelId);
-        double TC6 = service.GetAnbefaletDosisPerDøgn(p4.PatientId, acetyl.LaegemiddelId);
-        double TC7 = service.GetAnbefaletDosisPerDøgn(p5.PatientId, acetyl.LaegemiddelId);
-        double TC8 = service.GetAnbefaletDosisPerDøgn(p6.PatientId, acetyl.LaegemiddelId);
-        double TC9 = service.GetAnbefaletDosisPerDøgn(p7.PatientId, acetyl.LaegemiddelId);
+        double TC1 = service.GetAnbefaletDosisPerDøgn(p1.PatientId, acetyl.LaegemiddelId);
+        double TC2 = service.GetAnbefaletDosisPerDøgn(p2.PatientId, acetyl.LaegemiddelId);
+        double TC3 = service.GetAnbefaletDosisPerDøgn(p3.PatientId, acetyl.LaegemiddelId);
+        double TC4 = service.GetAnbefaletDosisPerDøgn(p4.PatientId, acetyl.LaegemiddelId);
+        double TC5 = service.GetAnbefaletDosisPerDøgn(p5.PatientId, acetyl.LaegemiddelId);
+        double TC6 = service.GetAnbefaletDosisPerDøgn(p6.PatientId, acetyl.LaegemiddelId);
+        double TC7 = service.GetAnbefaletDosisPerDøgn(p7.PatientId, acetyl.LaegemiddelId);
+
+
+        testLogger.LogInformation($"TC6 anbefalet dosis value : {TC6}");
+
 
         // Sammenligner forventet resultat med faktisk resultat 
-        Assert.AreEqual(2, TC3);
-        Assert.AreEqual(2.49, TC4);
-        //Assert.AreEqual()
+        Assert.AreEqual(2, TC1);
+        Assert.AreEqual(2.49, TC2);
+        Assert.AreEqual(3.75, TC3);
+        Assert.AreEqual(9.75, TC4);
+        Assert.AreEqual(18, TC5);
+        Assert.AreEqual(19.216, TC6);
+        Assert.AreEqual(20.16, TC7);
+
 
 
         testLogger.LogInformation($"Test finished at: {DateTime.Now}");
@@ -178,6 +192,7 @@ public class ServiceTest : TestBase
     [TestMethod]
     public void GetAnbefaletDosisPerDøgnTestFejler()
     {
+        //TC8, med ugyldige værdi og nullværdi
         var p1 = new Patient { PatientId = 25, vaegt = -20 };  //TC
         var p2 = new Patient { PatientId = 25, vaegt = 0 };
 
@@ -186,11 +201,11 @@ public class ServiceTest : TestBase
 
         service.AddPatient(p1);
 
-        double result1 = service.GetAnbefaletDosisPerDøgn(p1.PatientId, acetyl.LaegemiddelId);
-        double result2 = service.GetAnbefaletDosisPerDøgn(p2.PatientId, acetyl.LaegemiddelId);
+        double TC8 = service.GetAnbefaletDosisPerDøgn(p1.PatientId, acetyl.LaegemiddelId);
+        double TC9 = service.GetAnbefaletDosisPerDøgn(p2.PatientId, acetyl.LaegemiddelId);
 
-        Assert.AreEqual(2, result1);
-        Assert.AreEqual(0, result2); // Usikker på hvordan vi laver denne? 
+        Assert.AreEqual(2, TC8);
+        Assert.AreEqual(0, TC9); // Usikker på hvordan vi laver denne? 
 
     }
 

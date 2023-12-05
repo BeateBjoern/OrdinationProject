@@ -1,10 +1,14 @@
-@page "/Statistik"
+@*@page "/Statistik"
 
 @using ordinationsapp.Data;
 @using shared.Model;
 @using ordinationsapp.Shared
 @using ordinationsapp.Model;
 @inject ApiService apiService
+
+<head>
+    <link rel="stylesheet" href="/css/app.css">
+</head>
 
 <div class="container">
     <h1>Vis statistik</h1>
@@ -36,8 +40,23 @@
                 <input type="text" class="form-control" id="lm">
                 </div>
             </div>
+            <div class="form-group row">
+                <label for="lm" class="col-sm-4 col-form-label">Lægemiddel</label>
+                <div class="col-sm-8">
+                    @if(ordinationer != null)
+                    {
+                        <select class="form-control" id="lm" @bind="valgtLægemiddelNavn">
+                            @foreach (var option in lmList)
+                            {
+                                <option value="@option.navn">@option.navn</option>
+                            }
+                        </select>
+                    }
+                    <button class="btn btn-primary" @onclick="HentAntal"> Tjek resultat </button>
+                </div>
+            </div>
         </div>
-
+        
         <div class="col-md-12 border p-3">
             <h3>Resultat</h3>
 
@@ -45,6 +64,7 @@
                 <label for="antal" class="col-sm-4 col-form-label">Antal</label>
                 <div class="col-sm-8">
                 <input readonly type="number" class="form-control" id="antal">
+                <p> @antal</p>
                 </div>
             </div>
 
@@ -56,4 +76,62 @@
 @code {
     public Ordination? ordination;
     public List<Ordination> ordinationer = new List<Ordination>();
-}
+    public List<Laegemiddel> lmList = new List<Laegemiddel>();
+    public Laegemiddel valgtLægemiddel { get; set; }
+    public string valgtLægemiddelNavn = "";
+    public int antal = 0;
+
+    protected override async Task  OnInitializedAsync()
+    {
+
+        var result = await apiService.GetOrdinationer();
+        var resultLm = await apiService.GetLaegemidler();
+
+        Console.WriteLine(result.dagligFast.Length);
+
+        if(result != null)
+        {
+            for(int i = 0; i < result.pn.Length; i++)
+            {
+                ordinationer.Add(result.pn[i]);
+            }
+
+            for (int i = 0; i < result.dagligSkaev.Length; i++)
+            {
+                ordinationer.Add(result.dagligSkaev[i]);
+            }
+            for (int i = 0; i < result.dagligFast.Length; i++)
+            {
+                ordinationer.Add(result.dagligFast[i]);
+            }
+
+        }
+
+        if(resultLm!= null)
+        {
+            lmList = resultLm.ToList();
+        }
+
+
+
+
+
+    }
+
+
+    public void HentAntal()
+    {
+        if(valgtLægemiddel!= null &&  valgtLægemiddelNavn == "Acetylsalicylsyre")
+        {
+            var ordinationerFundet = ordinationer.FindAll(o => o.laegemiddel.navn == valgtLægemiddelNavn);
+            
+            antal = ordinationerFundet.Count();
+            Console.WriteLine(antal.ToString());
+        }
+
+        
+    }
+
+  
+
+}*@
