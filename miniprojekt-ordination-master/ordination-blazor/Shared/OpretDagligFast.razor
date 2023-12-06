@@ -106,6 +106,8 @@
     private DateTime StartDato { get; set; } = DateTime.Now;
     private DateTime SlutDato { get; set; } = DateTime.Now.AddDays(3);
 
+
+    //validering til metode vi har tilføjet 
     private async Task Opret() {
         if (Patient == null || laegemiddel == null) {
             responseMessage = "Patient og laegemiddel skal vælges";

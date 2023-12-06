@@ -6,9 +6,8 @@ using shared.Model;
 public class PNTest : TestBase
 {
 
-
+    //Test vi har lavet 
     [TestMethod] 
-
     public void givDosisTest()
     {
 
@@ -46,6 +45,7 @@ public class PNTest : TestBase
 
     }
 
+    //Test vi har lavet 
     [TestMethod]
     public void givDosisTestFejler()
     {

@@ -7,7 +7,8 @@ using shared.Model;
 public class DagligFastTest : TestBase
 {
 
-    //Test med gyldige værdier 
+    //Test vi har lavet, med gyldige værdier 
+    //Har tilhørende Testcase specifikation
     [TestMethod]
     public void DoegnDosisTest()
     {
@@ -41,12 +42,14 @@ public class DagligFastTest : TestBase
 
     }
 
-
+    //Test vi har lavet 
     //Test med ugyldige værdier, test der burde fejle 
     [TestMethod]
     public void DoegnDosisTestFejler()
     {
-       
+
+        testLogger.LogInformation("Test started at: " + DateTime.Now);
+
         //TC3 Test med negativ værdi som input på dosis
         DagligFast TC3 = new DagligFast(
             new DateTime(2023, 01, 01), new DateTime(2023, 12, 07),
@@ -54,6 +57,8 @@ public class DagligFastTest : TestBase
             -1, 1, 1, 1);
 
         double doegnDosisTC3 = TC3.doegnDosis();
+
+        testLogger.LogInformation("DoegnDosisTC3" + doegnDosisTC3);
 
         Assert.AreEqual(1, doegnDosisTC3);
 
@@ -67,6 +72,8 @@ public class DagligFastTest : TestBase
         double doegnDosisTC4 = TC4.doegnDosis();
 
         Assert.AreEqual(1, doegnDosisTC4);
+
+        testLogger.LogInformation("Test finished at: " + DateTime.Now);
 
 
 

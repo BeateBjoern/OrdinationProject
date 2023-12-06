@@ -7,7 +7,7 @@ using shared.Model;
 public class OrdinationTest : TestBase 
 {
 
-
+    //Test vi har lavet 
     [TestMethod]
     public void antalDageTest()
     {

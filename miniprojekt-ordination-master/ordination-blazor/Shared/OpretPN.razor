@@ -85,6 +85,7 @@
     private string lavDoegnDosis = "";
 
 
+    //metode vi har lavet 
     protected override async void OnInitialized()
     {
         if(AnbefaletDosisPerDøgn > 0 && AnbefaletDosisPerDøgn < 1)
@@ -93,7 +94,7 @@
         }
     }
 
-
+    // validering til metode vi har tilføjet 
     private async Task Opret() {
         if (Patient == null || laegemiddel == null)
         {

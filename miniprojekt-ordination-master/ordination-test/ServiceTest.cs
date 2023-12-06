@@ -19,7 +19,7 @@ public class ServiceTest : TestBase
         Assert.IsNotNull(service.GetPatienter());
     }
 
-
+    //Test vi har lavet 
     //Test med gyldige værdier (har test tabel)
     [TestMethod]
     public void OpretDagligFast()
@@ -54,6 +54,7 @@ public class ServiceTest : TestBase
 
     }  
 
+    //Test vi har lavet 
     //Test med gyldige værdier og valid input 
     [TestMethod]
     public void OpretPNTest()
@@ -82,6 +83,7 @@ public class ServiceTest : TestBase
 
     }
 
+    //Test vi har lavet 
     //Test med gyldige værdier og valid input 
     [TestMethod]
     public void OpretDagligSkaevTest()
@@ -122,6 +124,8 @@ public class ServiceTest : TestBase
     }
 
 
+
+    //Test vi har lavet
     [TestMethod]
     public void GetAnbefaletDosisPerDøgnTest()
     {
@@ -188,7 +192,8 @@ public class ServiceTest : TestBase
     }
 
 
-    //Metode med ugyldig værdi (negativt tal) 
+    //Test vi har lavet 
+    //Metode med ugyldig værdi (negativt tal og null ) 
     [TestMethod]
     public void GetAnbefaletDosisPerDøgnTestFejler()
     {

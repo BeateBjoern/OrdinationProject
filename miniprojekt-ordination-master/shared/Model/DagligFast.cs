@@ -18,7 +18,7 @@ public class DagligFast : Ordination {
     public DagligFast() : base(null!, new DateTime(), new DateTime()) {
     }
 
-	//overriding the methods from "Ordination" class 
+	//overriding metoder fra ordination 
 	public override double samletDosis() {
 		
 		return base.antalDage() * doegnDosis();
