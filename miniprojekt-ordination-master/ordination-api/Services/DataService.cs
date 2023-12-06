@@ -104,12 +104,14 @@ public class DataService
     }
 
 
+    //Metode vi har lavet 
     public void AddPatient(Patient patient)
     {
         db.Patienter.Add(patient);
         db.SaveChanges();
     }
 
+    //Metode vi har lavet 
     public void AddLaegemiddel(Laegemiddel laegemiddel)
     {
         db.Laegemiddler.Add(laegemiddel);
@@ -290,8 +292,6 @@ public class DataService
         {
             dosis = patient.vaegt * laegemiddel.enhedPrKgPrDoegnTung;
         }
-
-        //logger.LogInformation("GetANbefaletDosisPerDøgn færdig");
         return dosis;
     }
 

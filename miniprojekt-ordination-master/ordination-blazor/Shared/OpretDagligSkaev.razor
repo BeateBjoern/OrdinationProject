@@ -140,7 +140,9 @@
 
         if (dosisTotal < _anbefaletDosis.anbefaletDosis)
         {
-            Console.WriteLine("Oprettet!");
+            Console.WriteLine("Opret!");;
+            await apiService.OpretDagligSkaev(Patient.id, laegemiddel.LaegemiddelId, doser.ToArray(), StartDato, SlutDato);
+
             onDone?.Invoke($"Oprettet Daglig Skæv ordination for {Patient.navn}!");
         }
         else
