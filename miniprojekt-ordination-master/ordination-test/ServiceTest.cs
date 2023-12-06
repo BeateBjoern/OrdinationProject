@@ -218,20 +218,22 @@ public class ServiceTest : TestBase
 
 
     [TestMethod]
-    [ExpectedException(typeof(ArgumentNullException))]
     public void TestAtKodenSmiderEnException()
     {
-
         testLogger.LogInformation($"Test started at: {DateTime.Now}");
 
         Patient testPatient1 = null;
-    
+
         var lmList = service.GetLaegemidler();
         var medicin = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 1);
 
-        // Act
-        var result = service.OpretDagligFast(1, -1, 0, 0, 4, 2, DateTime.Now, DateTime.Now.AddDays(3));
+        Assert.ThrowsException<ArgumentNullException>(() =>
+        {
+            // Metoden der forventes at smide en exception 
+            var result = service.OpretDagligFast(1, -1, 0, 0, 4, 2, DateTime.Now, DateTime.Now.AddDays(3));
   
+        });
+
         testLogger.LogInformation($"Test finished at: {DateTime.Now}");
     }
 }

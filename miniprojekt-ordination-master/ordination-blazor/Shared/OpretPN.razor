@@ -47,7 +47,8 @@
         <div class="form-group row">
             <label for="antal-enheder" class="col-sm-4 col-form-label">Antal enheder (styk):</label>
             <div class="col-sm-8">
-            <input @bind="antalEnheder" type="number" class="form-control" id="antal-enheder">
+            <input @bind="antalEnheder" type="number" step="0.01" class="form-control" id="antal-enheder">
+                <p style="color:red"> @lavDoegnDosis</p>
             </div>
         </div>
         <div class="form-group row">
@@ -77,10 +78,21 @@
     [Parameter]
     public Action<string>? onDone { get; set; }
 
-    private int antalEnheder = 0;
+    private double antalEnheder = 0;
     private DateTime StartDato { get; set; } = DateTime.Now;
     private DateTime SlutDato { get; set; } = DateTime.Now.AddDays(3);
     private string responseMessage = "";
+    private string lavDoegnDosis = "";
+
+
+    protected override async void OnInitialized()
+    {
+        if(AnbefaletDosisPerDøgn > 0 && AnbefaletDosisPerDøgn < 1)
+        {
+            lavDoegnDosis = "Den anbefalede døgndosis er tæt på 0, overvej evt. et andet præparat";    
+        }
+    }
+
 
     private async Task Opret() {
         if (Patient == null || laegemiddel == null)
@@ -96,28 +108,20 @@
         else if(antalEnheder <= 0){
             responseMessage = "Antal enheder skal være mere end 0";
         }
-        else
-        {
-
-
-            AnbefaletDosisDTO _anbefaletDosis = await apiService.GetAnbefaletDosisPerDøgn(Patient.id, laegemiddel);
-
-            if (antalEnheder < _anbefaletDosis.anbefaletDosis)
-            {
+        else if (antalEnheder < AnbefaletDosisPerDøgn)
+        {       
                 Console.WriteLine("Opret");
                 PN pnResult = await apiService.OpretPN(Patient.id, laegemiddel.LaegemiddelId, antalEnheder, StartDato, SlutDato);
                 Console.WriteLine("Oprettet!");
-                Console.WriteLine(pnResult);
                 onDone?.Invoke($"Oprettet PN ordination for {Patient.navn}!");
-            }
-            else
-            {
-                responseMessage = "Valgte dosis overskrider anbefalet døgndosis";
-            }
+        }
+        else
+        {
+           responseMessage = "Valgte dosis overskrider anbefalet døgndosis";
+        }
             
 
           
-        };
        
 
     }

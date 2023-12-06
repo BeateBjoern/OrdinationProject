@@ -88,6 +88,7 @@
         var resultLm = await apiService.GetLaegemidler();
 
         Console.WriteLine(result.dagligFast.Length);
+        antal = 0; 
 
         if(result != null)
         {
@@ -110,12 +111,10 @@
         if(resultLm!= null)
         {
             lmList = resultLm.ToList();
+            
         }
 
-
-
-
-
+        //ikke færdig kode 
     }
 
 

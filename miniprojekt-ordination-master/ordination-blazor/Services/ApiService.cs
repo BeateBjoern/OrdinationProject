@@ -47,8 +47,7 @@ public class ApiService
 
     public async Task<PN> OpretPN(int patientId, int laegemiddelId, double antal, DateTime startDato, DateTime slutDato)
     {
-        try
-        {
+        
             Console.WriteLine("Test ApiService client: " + patientId);
             string url = $"{baseAPI}ordinationer/pn/";
             PN_DTO opret = new(patientId, laegemiddelId, antal, startDato, slutDato);
@@ -59,25 +58,8 @@ public class ApiService
             string json = await res.Content.ReadAsStringAsync();
             PN newPN = JsonSerializer.Deserialize<PN>(json)!;
             return newPN;
-        }
-        catch (HttpRequestException ex)
-        {
-
-            Console.WriteLine($"HTTP request error: {ex.Message}");
-            throw; 
-        }
-        catch (JsonException ex)
-        {
-            // Handle JSON serialization/deserialization exceptions
-            Console.WriteLine($"JSON error: {ex.Message}");
-            throw;
-        }
-        catch (Exception ex)
-        {
-            // Handle other exceptions
-            Console.WriteLine($"An error occurred: {ex.Message}");
-            throw;
-        }
+        
+      
     }
 
     public async Task<DagligFast> OpretDagligFast(int patientId, int laegemiddelId, 
