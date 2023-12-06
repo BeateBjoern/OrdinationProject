@@ -52,7 +52,7 @@ public class ServiceTest : TestBase
 
         testLogger.LogInformation($"Test finished at: {DateTime.Now}");
 
-    }
+    }  
 
     //Test med gyldige værdier og valid input 
     [TestMethod]
@@ -192,6 +192,8 @@ public class ServiceTest : TestBase
     [TestMethod]
     public void GetAnbefaletDosisPerDøgnTestFejler()
     {
+        testLogger.LogInformation($"Test started at: {DateTime.Now}");
+
         //TC8, med ugyldige værdi og nullværdi
         var p1 = new Patient { PatientId = 25, vaegt = -20 };  //TC
         var p2 = new Patient { PatientId = 25, vaegt = 0 };
@@ -205,7 +207,9 @@ public class ServiceTest : TestBase
         double TC9 = service.GetAnbefaletDosisPerDøgn(p2.PatientId, acetyl.LaegemiddelId);
 
         Assert.AreEqual(2, TC8);
-        Assert.AreEqual(0, TC9); 
+        Assert.AreEqual(0, TC9);
+
+        testLogger.LogInformation($"Test finished at: {DateTime.Now}");
 
     }
 
@@ -213,19 +217,21 @@ public class ServiceTest : TestBase
 
 
 
-    //[TestMethod]
-    //[ExpectedException(typeof(ArgumentNullException))]
-    //public void TestAtKodenSmiderEnException()
-    //{
-    //    Patient testPatient1 = null;
-    //    int x = null!; 
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TestAtKodenSmiderEnException()
+    {
 
-    //    var lmList = service.GetLaegemidler();
-    //    var medicin = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 1);
+        testLogger.LogInformation($"Test started at: {DateTime.Now}");
 
-    //    // Act
-    //    var result = service.OpretDagligFast(-1,  , 0, 0, 4, 2, DateTime.Now, DateTime.Now.AddDays(3));
+        Patient testPatient1 = null;
+    
+        var lmList = service.GetLaegemidler();
+        var medicin = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 1);
 
-    //    Console.WriteLine("Her kommer der ikke en exception. Testen fejler.");
-    //}
+        // Act
+        var result = service.OpretDagligFast(1, -1, 0, 0, 4, 2, DateTime.Now, DateTime.Now.AddDays(3));
+  
+        testLogger.LogInformation($"Test finished at: {DateTime.Now}");
+    }
 }

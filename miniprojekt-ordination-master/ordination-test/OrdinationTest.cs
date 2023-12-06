@@ -14,15 +14,22 @@ public class OrdinationTest : TestBase
         testLogger.LogInformation("Test started at: " + DateTime.Now);
 
         //Test med 10 dages periode 
-        Ordination testOrdination = new PN(DateTime.Now, DateTime.Now.AddDays(10), 10, new Laegemiddel("Acetylsalicylsyre", 0.1, 0.15, 0.16, "Styk"));
+        Ordination ordination10dage = new PN(DateTime.Now, DateTime.Now.AddDays(10), 10, new Laegemiddel("Acetylsalicylsyre", 0.1, 0.15, 0.16, "Styk"));
 
-        int _antalDage= testOrdination.antalDage();
+        int periode1 = ordination10dage.antalDage();
 
-        testLogger.LogInformation("AntalDage() " + _antalDage);
+        testLogger.LogInformation("AntalDage() " + periode1);
 
+        Assert.AreEqual(10, periode1);
 
-        Assert.AreEqual(10, _antalDage);
+        //Test med 1 dags periode 
+        Ordination ordination1dag = new PN(DateTime.Now, DateTime.Now.AddDays(1), 10, new Laegemiddel("Acetylsalicylsyre", 0.1, 0.15, 0.16, "Styk"));
 
+        int periode2 = ordination1dag.antalDage();
+
+        testLogger.LogInformation("AntalDage() " + periode2);
+
+        Assert.AreEqual(1, periode2);
 
         testLogger.LogInformation("Test finished at: " + DateTime.Now);
 

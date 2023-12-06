@@ -183,7 +183,7 @@ public class DataService
             Patient patient = db.Patienter.FirstOrDefault(a => a.PatientId == patientId);
             Laegemiddel laegemiddel = db.Laegemiddler.FirstOrDefault(b => b.LaegemiddelId == laegemiddelId);
 
-            if (patient == null || laegemiddel == null || antalMorgen == null || antalMiddag == null || antalAften == null || antalNat == null || startDato == null || slutDato == null || startDato > slutDato)
+            if (patient == null || laegemiddel == null || antalMorgen <= null || antalMiddag <= null || antalAften <= null || antalNat <= null || startDato == null || slutDato == null || startDato > slutDato)
             {
                  throw new ArgumentNullException("Felter mangler eller ugyldig dato input. Startdato skal ligge før slutdato");
                  
@@ -244,11 +244,15 @@ public class DataService
 
         Console.WriteLine("dato fra anvendordination: " + dato);
 
-        if (pn == null || dato.dato < DateTime.Now.Date|| dato.dato <= pn.startDen || dato.dato >= pn.slutDen ) //Tjekker for gyldig dato input 
+        if (pn == null)  //Tjekker for gyldig dato input 
+        {
+            throw new ArgumentNullException("PN ordination findes ikke");
+    
+        }
+        else if(dato.dato < DateTime.Now.Date || dato.dato <= pn.startDen || dato.dato >= pn.slutDen)
         {
             return "Medicin kan ikke gives udenfor ordinationsperiode, eller med tilbagevirkende kraft";
-
-        }
+        }  
         else
         {
 

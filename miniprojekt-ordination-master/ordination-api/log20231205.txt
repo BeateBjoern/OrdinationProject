@@ -1374,3 +1374,64 @@ LIMIT 1
 2023-12-05 12:29:31.356 +01:00 [INF] Writing value of type 'shared.Model.AnbefaletDosisDTO' with status code '200'.
 2023-12-05 12:29:31.361 +01:00 [INF] Executed endpoint 'HTTP: POST /api/patienter/{id}/beregnAnbefaletDosisPerDøgn'
 2023-12-05 12:29:31.364 +01:00 [INF] Request finished HTTP/2 POST https://localhost:8080/api/patienter/3/beregnAnbefaletDosisPerDøgn application/json;+charset=utf-8 39 - 200 - application/json;+charset=utf-8 58.3943ms
+2023-12-05 13:05:52.826 +01:00 [INF] Entity Framework Core 6.0.9 initialized 'OrdinationContext' using provider 'Microsoft.EntityFrameworkCore.Sqlite:6.0.9' with options: None
+2023-12-05 13:05:53.196 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-12-05 13:05:53.489 +01:00 [INF] Executed DbCommand (14ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."PatientId", "p"."cprnr", "p"."navn", "p"."vaegt"
+FROM "Patienter" AS "p"
+LIMIT 1
+2023-12-05 13:05:53.592 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-12-05 13:05:53.598 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "l"."LaegemiddelId", "l"."enhed", "l"."enhedPrKgPrDoegnLet", "l"."enhedPrKgPrDoegnNormal", "l"."enhedPrKgPrDoegnTung", "l"."navn"
+FROM "Laegemiddler" AS "l"
+LIMIT 1
+2023-12-05 13:05:53.629 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2023-12-05 13:05:53.640 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "o"."OrdinationId", "o"."Discriminator", "o"."LaegemiddelId", "o"."PatientId", "o"."slutDen", "o"."startDen", "o"."AftenDosisDosisId", "o"."MiddagDosisDosisId", "o"."MorgenDosisDosisId", "o"."NatDosisDosisId", "o"."antalEnheder"
+FROM "Ordinationer" AS "o"
+LIMIT 1
+2023-12-05 13:05:53.913 +01:00 [INF] Now listening on: https://localhost:8080
+2023-12-05 13:05:53.914 +01:00 [INF] Now listening on: http://localhost:8081
+2023-12-05 13:05:53.924 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-12-05 13:05:53.926 +01:00 [INF] Hosting environment: Development
+2023-12-05 13:05:53.928 +01:00 [INF] Content root path: C:\Users\Ida Beate Bjørn\Documents\Repositories\Softwarearkitektur\TestMiniprojekt\miniprojekt-ordination-master\ordination-api\
+2023-12-05 13:11:45.271 +01:00 [INF] Request starting HTTP/2 GET https://localhost:8080/api/laegemidler - -
+2023-12-05 13:11:45.271 +01:00 [INF] Request starting HTTP/2 GET https://localhost:8080/api/patienter/ - -
+2023-12-05 13:11:45.320 +01:00 [INF] CORS policy execution successful.
+2023-12-05 13:11:45.320 +01:00 [INF] CORS policy execution successful.
+2023-12-05 13:11:45.328 +01:00 [INF] Executing endpoint 'HTTP: GET /api/laegemidler'
+2023-12-05 13:11:45.328 +01:00 [INF] Executing endpoint 'HTTP: GET /api/patienter'
+2023-12-05 13:11:45.384 +01:00 [INF] Entity Framework Core 6.0.9 initialized 'OrdinationContext' using provider 'Microsoft.EntityFrameworkCore.Sqlite:6.0.9' with options: None
+2023-12-05 13:11:45.384 +01:00 [INF] Entity Framework Core 6.0.9 initialized 'OrdinationContext' using provider 'Microsoft.EntityFrameworkCore.Sqlite:6.0.9' with options: None
+2023-12-05 13:11:45.397 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "l"."LaegemiddelId", "l"."enhed", "l"."enhedPrKgPrDoegnLet", "l"."enhedPrKgPrDoegnNormal", "l"."enhedPrKgPrDoegnTung", "l"."navn"
+FROM "Laegemiddler" AS "l"
+2023-12-05 13:11:45.437 +01:00 [INF] Executed endpoint 'HTTP: GET /api/laegemidler'
+2023-12-05 13:11:45.447 +01:00 [INF] Request finished HTTP/2 GET https://localhost:8080/api/laegemidler - - - 200 - application/json;+charset=utf-8 181.7442ms
+2023-12-05 13:11:45.532 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."PatientId", "p"."cprnr", "p"."navn", "p"."vaegt", "o"."OrdinationId", "o"."Discriminator", "o"."LaegemiddelId", "o"."PatientId", "o"."slutDen", "o"."startDen", "o"."AftenDosisDosisId", "o"."MiddagDosisDosisId", "o"."MorgenDosisDosisId", "o"."NatDosisDosisId", "o"."antalEnheder"
+FROM "Patienter" AS "p"
+LEFT JOIN "Ordinationer" AS "o" ON "p"."PatientId" = "o"."PatientId"
+ORDER BY "p"."PatientId"
+2023-12-05 13:11:45.569 +01:00 [INF] Executed endpoint 'HTTP: GET /api/patienter'
+2023-12-05 13:11:45.573 +01:00 [INF] Request finished HTTP/2 GET https://localhost:8080/api/patienter/ - - - 200 - application/json;+charset=utf-8 308.1095ms
+2023-12-05 13:11:50.002 +01:00 [INF] Request starting HTTP/2 OPTIONS https://localhost:8080/api/patienter/5/beregnAnbefaletDosisPerDøgn - -
+2023-12-05 13:11:50.007 +01:00 [INF] CORS policy execution successful.
+2023-12-05 13:11:50.014 +01:00 [INF] Request finished HTTP/2 OPTIONS https://localhost:8080/api/patienter/5/beregnAnbefaletDosisPerDøgn - - - 204 - - 12.2824ms
+2023-12-05 13:11:50.017 +01:00 [INF] Request starting HTTP/2 POST https://localhost:8080/api/patienter/5/beregnAnbefaletDosisPerDøgn application/json;+charset=utf-8 39
+2023-12-05 13:11:50.023 +01:00 [INF] CORS policy execution successful.
+2023-12-05 13:11:50.026 +01:00 [INF] Executing endpoint 'HTTP: POST /api/patienter/{id}/beregnAnbefaletDosisPerDøgn'
+2023-12-05 13:11:50.062 +01:00 [INF] Entity Framework Core 6.0.9 initialized 'OrdinationContext' using provider 'Microsoft.EntityFrameworkCore.Sqlite:6.0.9' with options: None
+2023-12-05 13:11:50.093 +01:00 [INF] Executed DbCommand (4ms) [Parameters=[@__patientId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "p"."PatientId", "p"."cprnr", "p"."navn", "p"."vaegt"
+FROM "Patienter" AS "p"
+WHERE "p"."PatientId" = @__patientId_0
+LIMIT 1
+2023-12-05 13:11:50.110 +01:00 [INF] Executed DbCommand (0ms) [Parameters=[@__laegemiddelId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "l"."LaegemiddelId", "l"."enhed", "l"."enhedPrKgPrDoegnLet", "l"."enhedPrKgPrDoegnNormal", "l"."enhedPrKgPrDoegnTung", "l"."navn"
+FROM "Laegemiddler" AS "l"
+WHERE "l"."LaegemiddelId" = @__laegemiddelId_0
+LIMIT 1
+2023-12-05 13:11:50.135 +01:00 [INF] Writing value of type 'shared.Model.AnbefaletDosisDTO' with status code '200'.
+2023-12-05 13:11:50.141 +01:00 [INF] Executed endpoint 'HTTP: POST /api/patienter/{id}/beregnAnbefaletDosisPerDøgn'
+2023-12-05 13:11:50.144 +01:00 [INF] Request finished HTTP/2 POST https://localhost:8080/api/patienter/5/beregnAnbefaletDosisPerDøgn application/json;+charset=utf-8 39 - 200 - application/json;+charset=utf-8 126.8363ms

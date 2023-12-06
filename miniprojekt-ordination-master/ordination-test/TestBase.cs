@@ -23,7 +23,7 @@ namespace ordination_test
             testLogger = new LoggerFactory().AddSerilog().CreateLogger<DataService>();//opretter et nyt instance af logger 
 
             var optionsBuilder = new DbContextOptionsBuilder<OrdinationContext>();
-            optionsBuilder.UseInMemoryDatabase(databaseName: "test-database");
+            optionsBuilder.UseInMemoryDatabase(databaseName: "test-database"); //Bruger test-database
             var context = new OrdinationContext(optionsBuilder.Options);
             service = new DataService(context, testLogger);
             service.SeedData();
