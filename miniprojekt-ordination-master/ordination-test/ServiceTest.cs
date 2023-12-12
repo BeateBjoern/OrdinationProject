@@ -195,28 +195,53 @@ public class ServiceTest : TestBase
     //Test vi har lavet 
     //Metode med ugyldig værdi (negativt tal og null ) 
     [TestMethod]
-    public void GetAnbefaletDosisPerDøgnTestFejler()
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void GetAnbefaletDosisPerDøgnTestMedNullVærdi()
+    {
+        testLogger.LogInformation($"Test started at: {DateTime.Now}");
+
+        var p2 = new Patient { PatientId = 26, vaegt = 0 }; //TC9
+
+        var lmList = service.GetLaegemidler();
+        var acetyl = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 1);
+
+        service.AddPatient(p2);
+
+
+        double TC9 = service.GetAnbefaletDosisPerDøgn(p2.PatientId, acetyl.LaegemiddelId);
+
+        Assert.AreEqual(0, TC9);
+
+        testLogger.LogInformation($"Test finished at: {DateTime.Now}");
+
+    }
+
+
+    //Test vi har lavet 
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentOutOfRangeException))]
+    public void GetAnbefaletDosisPerDøgnTestMedNegativVærdi()
     {
         testLogger.LogInformation($"Test started at: {DateTime.Now}");
 
         //TC8, med ugyldige værdi og nullværdi
-        var p1 = new Patient { PatientId = 25, vaegt = -20 };  //TC
-        var p2 = new Patient { PatientId = 25, vaegt = 0 };
+        var p1 = new Patient { PatientId = 25, vaegt = -20 };  //TC8
+
 
         var lmList = service.GetLaegemidler();
         var acetyl = lmList.FirstOrDefault(lm => lm.LaegemiddelId == 1);
 
         service.AddPatient(p1);
 
-        double TC8 = service.GetAnbefaletDosisPerDøgn(p1.PatientId, acetyl.LaegemiddelId);
-        double TC9 = service.GetAnbefaletDosisPerDøgn(p2.PatientId, acetyl.LaegemiddelId);
 
-        Assert.AreEqual(2, TC8);
-        Assert.AreEqual(0, TC9);
+        double TC8 = service.GetAnbefaletDosisPerDøgn(p1.PatientId, acetyl.LaegemiddelId);
+
+        Assert.AreEqual(-2, TC8);
 
         testLogger.LogInformation($"Test finished at: {DateTime.Now}");
 
     }
+
 
 
 

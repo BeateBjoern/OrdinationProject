@@ -3,14 +3,15 @@ namespace shared.Model;
 public class PN : Ordination {
 	public double antalEnheder { get; set; }
     public List<Dato> dates { get; set; } = new List<Dato>();
+
  
 
-    public PN (DateTime startDen, DateTime slutDen, double antalEnheder, Laegemiddel laegemiddel) : base( laegemiddel, startDen, slutDen) {
+    public PN (int _patientId, DateTime startDen, DateTime slutDen, double antalEnheder, Laegemiddel laegemiddel) : base(_patientId, laegemiddel, startDen, slutDen) {
 		this.antalEnheder = antalEnheder;
 
     }
 
-    public PN() : base( null!, new DateTime(), new DateTime())
+    public PN() : base(0, null!, new DateTime(), new DateTime())
     {
     }
 

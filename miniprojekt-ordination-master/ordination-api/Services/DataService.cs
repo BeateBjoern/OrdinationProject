@@ -29,11 +29,11 @@ public class DataService
 
         if (patients[0] == null)
         {
-            patients[0] = new Patient("121256-0512", "Jane Jensen", 63.4);
-            patients[1] = new Patient("070985-1153", "Finn Madsen", 83.2);
-            patients[2] = new Patient("050972-1233", "Hans Jørgensen", 89.4);
-            patients[3] = new Patient("011064-1522", "Ulla Nielsen", 59.9);
-            patients[4] = new Patient("123456-1234", "Ib Hansen", 87.7);
+            patients[0] = new Patient(1, "121256-0512", "Jane Jensen", 63.4);
+            patients[1] = new Patient(2,"070985-1153", "Finn Madsen", 83.2);
+            patients[2] = new Patient(3,"050972-1233", "Hans Jørgensen", 89.4);
+            patients[3] = new Patient(4,"011064-1522", "Ulla Nielsen", 59.9);
+            patients[4] = new Patient(5,"123456-1234", "Ib Hansen", 87.7);
 
             db.Patienter.Add(patients[0]);
             db.Patienter.Add(patients[1]);
@@ -68,12 +68,12 @@ public class DataService
             Laegemiddel[] lm = db.Laegemiddler.ToArray();
             Patient[] p = db.Patienter.ToArray();
 
-            ordinationer[0] = new PN( new DateTime(2021, 1, 1), new DateTime(2021, 1, 12), 123, lm[1]);
-            ordinationer[1] = new PN( new DateTime(2021, 2, 12), new DateTime(2021, 2, 14), 3, lm[0]);
-            ordinationer[2] = new PN( new DateTime(2021, 1, 20), new DateTime(2021, 1, 25), 5, lm[2]);
-            ordinationer[3] = new PN(new DateTime(2021, 1, 1), new DateTime(2021, 1, 12), 123, lm[1]);
-            ordinationer[4] = new DagligFast(new DateTime(2021, 1, 10), new DateTime(2021, 1, 12), lm[1], 2, 0, 1, 0);
-            ordinationer[5] = new DagligSkæv( new DateTime(2021, 1, 23), new DateTime(2021, 1, 24), lm[2]);
+            ordinationer[0] = new PN(1, new DateTime(2021, 1, 1), new DateTime(2021, 1, 12), 123, lm[1]);
+            ordinationer[1] = new PN(2, new DateTime(2021, 2, 12), new DateTime(2021, 2, 14), 3, lm[0]);
+            ordinationer[2] = new PN(3,new DateTime(2021, 1, 20), new DateTime(2021, 1, 25), 5, lm[2]);
+            ordinationer[3] = new PN(4,new DateTime(2021, 1, 1), new DateTime(2021, 1, 12), 123, lm[1]);
+            ordinationer[4] = new DagligFast(5, new DateTime(2021, 1, 10), new DateTime(2021, 1, 12), lm[1], 2, 0, 1, 0);
+            ordinationer[5] = new DagligSkæv(4, new DateTime(2021, 1, 23), new DateTime(2021, 1, 24), lm[2]);
 
             ((DagligSkæv)ordinationer[5]).doser = new Dosis[] {
                 new Dosis(CreateTimeOnly(12, 0, 0), 0.5),
@@ -168,7 +168,7 @@ public class DataService
             {
 
                 Console.WriteLine("Test OpretPn DataService: " + patientId);
-                PN nyPn = new PN(startDato, slutDato, antal, laegeMiddel);
+                PN nyPn = new PN(patient.PatientId, startDato, slutDato, antal, laegeMiddel);
                 patient.ordinationer.Add(nyPn);
                 db.SaveChanges();
                 return nyPn;
@@ -192,7 +192,7 @@ public class DataService
             }
             else
             {
-                var nyDagligFast = new DagligFast(startDato, slutDato, laegemiddel, antalMorgen, antalMiddag, antalAften, antalNat);
+                var nyDagligFast = new DagligFast(patient.PatientId, startDato, slutDato, laegemiddel, antalMorgen, antalMiddag, antalAften, antalNat);
                 patient.ordinationer.Add(nyDagligFast);
                 Console.WriteLine(nyDagligFast.MorgenDosis);
                 db.SaveChanges();
@@ -220,7 +220,7 @@ public class DataService
 
             else if(dosisTotal!= 0 && dosisTotal < anbefaletDosis)
             {
-                var nyDagligSkæv = new DagligSkæv(startDato, slutDato, laegemiddel);
+                var nyDagligSkæv = new DagligSkæv(patient.PatientId, startDato, slutDato, laegemiddel);
 
                 foreach (var dosis in doser)
                 {
@@ -278,6 +278,14 @@ public class DataService
         if (laegemiddel == null && patient == null)
         {
             throw new ArgumentNullException("Patient og lægemiddel må ikke være null");
+        }
+        else if (patient.vaegt == 0)
+        {
+            throw new ArgumentNullException("Vægt skal være over 0");
+        }
+        else if(patient.vaegt < 0)
+        {
+            throw new ArgumentOutOfRangeException("Vægt har en ugyldig værdi");
         }
 
         else if (patient.vaegt < 25)

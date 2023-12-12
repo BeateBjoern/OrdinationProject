@@ -5,14 +5,15 @@ public abstract class Ordination {
     public DateTime startDen { get; set; }
     public DateTime slutDen { get; set; }
     public Laegemiddel laegemiddel { get; set; }
-
+    public int patientId { get; set; }
 
 
     //Ordination konstruktør tager start og slut dato + lægemiddel 
-    public Ordination( Laegemiddel laegemiddel, DateTime startDen = new DateTime(), DateTime slutDen = new DateTime()) {
+    public Ordination( int _patientId, Laegemiddel laegemiddel, DateTime startDen = new DateTime(), DateTime slutDen = new DateTime()) {
         this.startDen = startDen;
     	this.slutDen = slutDen;
         this.laegemiddel = laegemiddel;
+        this.patientId = _patientId;
     }
 
     public Ordination()

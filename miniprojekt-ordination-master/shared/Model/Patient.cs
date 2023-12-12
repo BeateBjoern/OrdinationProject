@@ -8,10 +8,11 @@ public class Patient {
     public double vaegt { get; set; }
     public List<Ordination> ordinationer { get; set; } = new List<Ordination>();
 
-    public Patient(String cprnr, String navn, double vaegt) {
+    public Patient(int id, String cprnr, String navn, double vaegt) {
         this.cprnr = cprnr;
         this.navn = navn;
         this.vaegt = vaegt;
+        this.PatientId = id;
     }
 
     public Patient() {
