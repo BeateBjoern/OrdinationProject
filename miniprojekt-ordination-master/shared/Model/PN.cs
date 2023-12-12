@@ -20,13 +20,21 @@ public class PN : Ordination {
     public bool givDosis(Dato givesDen)
     {
 
-        if (givesDen != null && givesDen.dato >= startDen && givesDen.dato <= slutDen)
+        if (givesDen == null)
+        {
+            throw new ArgumentNullException("dato kan ikke være nul");
+        }
+        else if(givesDen.dato < startDen || givesDen.dato > slutDen)
+        {
+            throw new ArgumentOutOfRangeException("Datoen du har valgt er udenfor gyldig periode");
+        }
+        else
         {
             dates.Add(givesDen);
             return true;
         }
 
-        return false;
+      
     }
 
     //Metode vi har lavet 

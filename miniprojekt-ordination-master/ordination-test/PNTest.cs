@@ -47,34 +47,25 @@ public class PNTest : TestBase
 
     //Test vi har lavet 
     [TestMethod]
-    public void givDosisTestUgyldigVærdier()
+    public void givDosisTestUgyldigDato()
     {
-       
-        //Test med ugyldig input givesDen efter slutdato
+        PN TC4 = new PN(4, new DateTime(2023, 12, 01), new DateTime(2023, 12, 30), 123, new Laegemiddel("Fucidin", 0.025, 0.025, 0.025, "Styk"));
 
-        PN TC4= new PN(4,new DateTime(2023, 12, 01), new DateTime(2023, 12, 30), 123, new Laegemiddel("Fucidin", 0.025, 0.025, 0.025, "Styk"));
-
-        bool givDosis4= TC4.givDosis(new Dato { dato = new DateTime(2023, 12, 31).Date });
-
-        Assert.AreEqual(false, givDosis4);
-
-        
-        //Test med ugyldig input givesDen før startdato 
-        PN TC5 = new PN(5,new DateTime(2023, 12, 01), new DateTime(2023, 12, 30), 123, new Laegemiddel("Fucidin", 0.025, 0.025, 0.025, "Styk"));
-
-        bool givDosis5 = TC5.givDosis(new Dato { dato = new DateTime(2023, 11, 15).Date });
-
-        Assert.AreEqual(false, givDosis5);
-
-
-        //Test med 0 værdi i input 
-
-        PN TC6 = new PN(6,new DateTime(2023, 12, 01), new DateTime(2023, 12, 30), 123, new Laegemiddel("Fucidin", 0.025, 0.025, 0.025, "Styk"));
-
-        bool givDosis6 = TC6.givDosis(new Dato {  }) ;
-
-        Assert.AreEqual(false, givDosis6);
+        Assert.ThrowsException<ArgumentOutOfRangeException>(() => TC4.givDosis(new Dato { dato = new DateTime(2023, 12, 31).Date }));
+        Assert.ThrowsException<ArgumentOutOfRangeException>(() => TC4.givDosis(new Dato { dato = new DateTime(2023, 11, 15).Date }));
     }
 
-   
+    [TestMethod]
+    public void givDosisTestNullVærdi()
+    {
+
+        // Test med 0 værdi i input
+        PN TC6 = new PN(6, new DateTime(2023, 12, 01), new DateTime(2023, 12, 30), 123, new Laegemiddel("Fucidin", 0.025, 0.025, 0.025, "Styk"));
+
+        Assert.ThrowsException<ArgumentNullException>(() => TC6.givDosis(null));
+
+       
+    }
+
+
 }
