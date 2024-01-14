@@ -12,7 +12,7 @@ public class PNTest : TestBase
     {
 
        
-        // TC1, test med input givesDen = første dato 
+        // TC1, test med input givesDen = fï¿½rste dato 
 
         PN TC1 = new PN(1,new DateTime(2023, 12, 01), 
             new DateTime(2023, 12, 30), 123, 
@@ -33,7 +33,7 @@ public class PNTest : TestBase
 
         Assert.AreEqual(true, givDosis2);
 
-        // TC3, test med input givesDen mellem første og sidste dato 
+        // TC3, test med input givesDen mellem fï¿½rste og sidste dato 
         PN TC3 = new PN(3,new DateTime(2023, 12, 01),
             new DateTime(2023, 12, 30), 123,
             new Laegemiddel("Fucidin", 0.025, 0.025, 0.025, "Styk"));
@@ -56,15 +56,15 @@ public class PNTest : TestBase
     }
 
     [TestMethod]
-    public void givDosisTestNullVærdi()
+    public void givDosisTestNullVÃ¦rdi()
     {
 
-        // Test med 0 værdi i input
+        // Test med 0 vï¿½rdi i input
         PN TC6 = new PN(6, new DateTime(2023, 12, 01), new DateTime(2023, 12, 30), 123, new Laegemiddel("Fucidin", 0.025, 0.025, 0.025, "Styk"));
 
         Assert.ThrowsException<ArgumentNullException>(() => TC6.givDosis(null));
 
-       
+
     }
 
 

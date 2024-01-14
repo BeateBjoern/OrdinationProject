@@ -7,15 +7,15 @@ using shared.Model;
 public class DagligFastTest : TestBase
 {
 
-    //Test vi har lavet, med gyldige værdier 
-    //Har tilhørende Testcase specifikation
+    //Test vi har lavet, med gyldige vï¿½rdier 
+    //Har tilhï¿½rende Testcase specifikation
     [TestMethod]
     public void DoegnDosisTest()
     {
 
         testLogger.LogInformation("Test started at: " + DateTime.Now);
 
-        //TC1 Test med 1 styk(tæt på grænseværdi = 0 ) 
+        //TC1 Test med 1 styk(tï¿½t pï¿½ grï¿½nsevï¿½rdi = 0 ) 
         DagligFast TC1 = new DagligFast(1,
             new DateTime(2023, 01, 01), new DateTime(2023, 12, 07),
             new Laegemiddel("Acetylsalicylsyre", 0.1, 0.15, 0.16, "Styk"),
@@ -27,7 +27,7 @@ public class DagligFastTest : TestBase
 
         testLogger.LogInformation("TC1 Doegndosis resultat: " + doegnDosisTC1);
 
-        //TC2 Med gyldig værdi 10 styk
+        //TC2 Med gyldig vï¿½rdi 10 styk
         DagligFast TC2 = new DagligFast(2,
             new DateTime(2023, 01, 01), new DateTime(2024, 01, 01),
             new Laegemiddel("Acetylsalicylsyre", 0.1, 0.15, 0.16, "Styk"),
@@ -43,13 +43,13 @@ public class DagligFastTest : TestBase
     }
 
     //Test vi har lavet 
-    //Test med ugyldige værdier, test der burde fejle 
+    //Test med ugyldige vï¿½rdier, test der burde fejle 
     [TestMethod]
-    public void DoegnDosisTestNegativVærdi()
+    public void DoegnDosisTestNegativVÃ¦rdi()
     {
         testLogger.LogInformation("Test started at: " + DateTime.Now);
 
-        // TC3 Test med negativ værdi som input på dosis
+        // TC3 Test med negativ vï¿½rdi som input pï¿½ dosis
         DagligFast TC3 = new DagligFast(2,
             new DateTime(2023, 01, 01), new DateTime(2023, 12, 07),
             new Laegemiddel("Acetylsalicylsyre", 0.1, 0.15, 0.16, "Styk"),
@@ -64,11 +64,11 @@ public class DagligFastTest : TestBase
 
 
     [TestMethod]
-    public void DoegnDosisTestNullVærdi()
+    public void DoegnDosisTestNullVÃ¦rdi()
     {
         testLogger.LogInformation("Test started at: " + DateTime.Now);
 
-        // TC4 Test med 0 som input på alle dosis
+        // TC4 Test med 0 som input pï¿½ alle dosis
         DagligFast TC4 = new DagligFast(1,
             new DateTime(2023, 01, 01), new DateTime(2024, 01, 01),
             new Laegemiddel("Acetylsalicylsyre", 0.1, 0.15, 0.16, "Styk"),
